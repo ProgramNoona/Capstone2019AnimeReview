@@ -1,7 +1,7 @@
 ***
 CSC-289 - Capstone Project - Anime Review Site
 @authors: Michael Blythe, Samuel Blythe, Alex Lopez, Bethany Reagan, Juan Santiago
-login.html
+README.TXT
 ***
 
 To get started, you will need to install the libraries below. I would suggest using anaconda prompt as it makes the process simple. This project follows the flask tutorials found at "https://www.youtube.com/playlist?list=PL-osiE80TeTs4UjLw5MM6OjgkjFeUxCYH".
