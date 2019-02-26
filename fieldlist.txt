@@ -1,0 +1,13 @@
+Anime Name
+ID#
+pictureID#
+publisher
+begin date
+end date
+average rating
+# ratings
+Synopsis
+Genre
+Keywords
+#Seasons
+#Episodes
