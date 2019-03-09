@@ -32,3 +32,37 @@ class Post(db.Model):
     
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+class AnimeSeries(db.Model):
+    id = db.Column('animeID', db.Integer, primary_key=True)
+    animeTitle = db.Column('animeTitle', db.String(100), nullable=False)
+    content = db.Column('content', db.Text, nullable=False)
+    premiered = db.Column('premiered', db.Text, nullable=False)
+    episodes = db.Column('episodes', db.Text, nullable=False, default='n/a')
+    scored = db.Column('scored', db.Text, nullable=False)
+    thumbnail = db.Column('thumbnail', db.LargeBinary, nullable=False, default='thumbnail.jpg')
+    pic1 = db.Column('pic1', db.LargeBinary, nullable=False, default='pic1.jpg')
+    pic2 = db.Column('pic2', db.LargeBinary, nullable=False, default='pic2.jpg')
+
+    def __repr__(self):
+        return f"AnimeSeries('{self.animeTitle}', '{self.content}')"
+
+class Producer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    producer = db.Column(db.String(15), nullable=False)
+
+class Studio(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    studio = db.Column(db.String(15), nullable=False)
+
+class Type(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    typeCategory = db.Column(db.String(15), nullable=False)
+    
+class Genre(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    genre = db.Column(db.String(15), nullable=False)
+    
+    
+    
+    

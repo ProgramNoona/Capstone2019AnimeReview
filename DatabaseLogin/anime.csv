@@ -1,0 +1,8 @@
+animeID,name,premiered,genre,type,episodes,producer,licensor,studio,source,scored,scoredBy,members
+1,Cowboy Bebop,Spring 1998,"['Action', 'Adventure', 'Comedy', 'Drama', 'Sci-Fi', 'Space']",TV,26,['Bandai Visual'],"['Funimation', 'Bandai Entertainment']",['Sunrise'],Original,8.81,363889,704490
+6,Trigun,Spring 1998,"['Action', 'Sci-Fi', 'Adventure', 'Comedy', 'Drama', 'Shounen']",TV,26,['Victor Entertainment'],"['Funimation', 'Geneon Entertainment USA']",['Madhouse'],Manga,8.31,197451,372709
+7,Witch Hunter Robin,Summer 2002,"['Action', 'Magic', 'Police', 'Supernatural', 'Drama', 'Mystery']",TV,26,['Bandai Visual'],"['Funimation', 'Bandai Entertainment']",['Sunrise'],Original,7.34,31875,74889
+20,Naruto,Fall 2002,"['Action', 'Adventure', 'Comedy', 'Super Power', 'Martial Arts', 'Shounen']",TV,220,"['TV Tokyo', 'Aniplex', 'Shueisha']",['Viz Media'],['Studio Pierrot'],Manga,7.88,645672,975394
+21,One Piece,Fall 1999,"['Action', 'Adventure', 'Comedy', 'Super Power', 'Drama', 'Fantasy', 'Shounen']",TV,0,"['Fuji TV', 'TAP', 'Shueisha']","['Funimation', '4Kids Entertainment']",['Toei Animation'],Manga,8.54,422109,716639
+30,Neon Genesis Evangelion,Fall 1995,"['Action', 'Sci-Fi', 'Dementia', 'Psychological', 'Drama', 'Mecha']",TV,26,"['TV Tokyo', 'Kadokawa Shoten', 'Nihon Ad Systems', 'Audio Tanaka']",['ADV Films'],"['Gainax', 'Tatsunoko Production']",Original,8.32,362916,638943
+121,Fullmetal Alchemist,Fall 2003,"['Action', 'Adventure', 'Comedy', 'Drama', 'Fantasy', 'Magic', 'Military', 'Shounen']",TV,51,"['Aniplex', 'Dentsu', 'Square Enix', 'Mainichi Broadcasting System']",['Funimation'],['Bones'],Manga,8.29,490243,789593
