@@ -38,6 +38,75 @@ about.html
 						{{ form.content(class="form-control form-control-lg") }}
 					{% endif %}
 				</div>
+				<div class="form-group">
+					{{ form.premiered.label(class="form-control-label") }}
+					
+					{% if form.premiered.errors %}
+						{{ form.premiered(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.premiered.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ form.premiered(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+				<div class="form-group">
+					{{ form.episodes.label(class="form-control-label") }}
+					
+					{% if form.episodes.errors %}
+						{{ form.episodes(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.episodes.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ form.episodes(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+				<div class="form-group">
+					{{ form.scored.label(class="form-control-label") }}
+					
+					{% if form.scored.errors %}
+						{{ form.scored(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.scored.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ form.scored(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+				<div class="form-group">
+					{{ form.thumbnail.label() }}
+					{{ form.thumbnail(class="form-control-file") }}
+					{% if form.thumbnail.errors %}
+						{% for error in form.thumbnail.errors %}
+							<span class="text-danger">{{ error }}</span></br>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group">
+					{{ form.pic1.label() }}
+					{{ form.pic1(class="form-control-file") }}
+					{% if form.pic1.errors %}
+						{% for error in form.pic1.errors %}
+							<span class="text-danger">{{ error }}</span></br>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group">
+					{{ form.pic2.label() }}
+					{{ form.pic2(class="form-control-file") }}
+					{% if form.pic2.errors %}
+						{% for error in form.pic2.errors %}
+							<span class="text-danger">{{ error }}</span></br>
+						{% endfor %}
+					{% endif %}
+				</div>
 			</fieldset>
 			<div class="form-group">
 				{{ form.submit(class="btn btn-outline-info") }}

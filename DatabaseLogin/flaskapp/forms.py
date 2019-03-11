@@ -63,11 +63,27 @@ class UpdateAccountForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
+    animeseries_id = StringField('Anime Series', validators=[DataRequired()])
     submit = SubmitField('Post')
     
 class AnimeForm(FlaskForm):
     animeTitle = StringField('Anime Title', 
                            validators=[DataRequired(), Length(min=2, max=30)])
     content = StringField('Synopsis', 
-                        validators=[DataRequired(), Length(min=10, max=200)])
+                        validators=[DataRequired()])
+    premiered = StringField('Premiered', 
+                           validators=[DataRequired(), Length(min=2, max=30)])
+    episodes = StringField('Episodes', 
+                        validators=[DataRequired()])
+    scored = StringField('Scored', 
+                        validators=[DataRequired()])
+    thumbnail = FileField('thumbnail', 
+                        validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
+    pic1 = FileField('thumbnail', 
+                        validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
+    pic2 = FileField('thumbnail', 
+                        validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
+    briefContent = StringField('Premiered', 
+                           validators=[DataRequired(), Length(min=2, max=200)])
+    
     submit = SubmitField('Submit')

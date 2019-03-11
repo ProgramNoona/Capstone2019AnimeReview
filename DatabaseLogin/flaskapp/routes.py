@@ -17,7 +17,9 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route("/home")
 def home():
     animes = AnimeSeries.query.all()
-    return render_template('home.html', animes=animes)
+    post = Post.query.all()
+    image_file = url_for('static', filename='anime_thumbnail/downloads/')
+    return render_template('home.html', animes=animes, image_file=image_file, post=post)
 
 @app.route("/about")
 def about():
@@ -88,6 +90,11 @@ def account():
 
 @app.route("/anime", methods=['GET', 'POST'])
 def anime():
+    try:
+        if current_user.username != 'admin':
+            abort(403)
+    except:
+        abort(403)
     form = AnimeForm()
     if form.validate_on_submit():
             anime = AnimeSeries(animeTitle=form.animeTitle.data, content=form.content.data)
@@ -101,7 +108,7 @@ def anime():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        post = Post(animeseries_id=form.animeseries_id.data, title=form.title.data, content=form.content.data, author=current_user)
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
@@ -146,6 +153,7 @@ def delete_post(post_id):
 @app.route("/<animeTitle>", methods=['GET'])
 def animepage(animeTitle):
     animes = AnimeSeries.query.filter(AnimeSeries.animeTitle == animeTitle).first()
-    image_file = url_for('static', filename='anime_thumbnail/downloads/' + animes.thumbnail)
-    return render_template('animepage.html', animes=animes, image_file=image_file)
+    posts = Post.query.filter_by(animeseries_id = animes.id).all()
+    image_file = url_for('static', filename='anime_thumbnail/downloads/' + animes.animeTitle + '.jpg')
+    return render_template('animepage.html', animes=animes, image_file=image_file, posts=posts)
 

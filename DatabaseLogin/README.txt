@@ -13,6 +13,7 @@ pip install flask-bcrypt
 pip install flask-login
 pip install flask
 pip install flask-wtf
+pip install flask-SQLAlchemy
 pip install sqlalchemy
 pip install Pillow
 pip install sqlalchemy-media

@@ -29,20 +29,25 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    animeseries_id = db.Column(db.Integer, db.ForeignKey('animeseries.id'))
     
     def __repr__(self):
-        return f"Post('{self.title}', '{self.date_posted}')"
+        return f"User: {self.author.username}" + "\n" + f" Title: {self.title}" + "\n" + f"Review: {self.content}"
 
 class AnimeSeries(db.Model):
-    id = db.Column('animeID', db.Integer, primary_key=True)
-    animeTitle = db.Column('animeTitle', db.String(100), nullable=False)
-    content = db.Column('content', db.Text, nullable=False)
-    premiered = db.Column('premiered', db.Text, nullable=False)
-    episodes = db.Column('episodes', db.Text, nullable=False, default='n/a')
-    scored = db.Column('scored', db.Text, nullable=False)
-    thumbnail = db.Column('thumbnail', db.LargeBinary, nullable=False, default='thumbnail.jpg')
-    pic1 = db.Column('pic1', db.LargeBinary, nullable=False, default='pic1.jpg')
-    pic2 = db.Column('pic2', db.LargeBinary, nullable=False, default='pic2.jpg')
+    __tablename__ = 'animeseries'
+    id = db.Column(db.Integer, primary_key=True)
+    animeTitle = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    premiered = db.Column(db.Text, nullable=False)
+    episodes = db.Column(db.Text, nullable=False, default='n/a')
+    scored = db.Column(db.Text, nullable=False)
+    thumbnail = db.Column(db.Text, nullable=False, default='thumbnail.jpg')
+    pic1 = db.Column(db.Text, nullable=False, default='pic1.jpg')
+    pic2 = db.Column(db.Text, nullable=False, default='pic2.jpg')
+    briefContent = db.Column(db.Text, nullable=False)
+    genre = db.relationship('Genre', backref='animeseries', lazy=True)
+    posts = db.relationship('Post', backref='posts', lazy=True)
 
     def __repr__(self):
         return f"AnimeSeries('{self.animeTitle}', '{self.content}')"
@@ -62,6 +67,10 @@ class Type(db.Model):
 class Genre(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     genre = db.Column(db.String(15), nullable=False)
+    animeseries_id = db.Column(db.Integer, db.ForeignKey('animeseries.id'))
+    
+    def __repr__(self):
+        return f"Tags: {self.genre}"
     
     
     

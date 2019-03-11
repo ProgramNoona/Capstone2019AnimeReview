@@ -5,9 +5,29 @@ about.html
 -->
 {% extends "layout.html" %}
 {% block content %}
-	<h1>{{ animes.animeTitle }}</h1>
-	<h1>{{ animes.content }}</h1>
 	<div class="media">
-		<img class="rounded-circle account-img" src="{{ image_file }}">
+		<img class="rounded-circle right" src="{{ image_file }}">
 	</div>
+	<h1>{{ animes.animeTitle }}</h1>
+	<div class="center">
+		<h5>Premiered: {{ animes.premiered }}</h5>
+		<h5>Episodes: {{ animes.episodes }}</h5>
+		<h5>Rating: {{ animes.scored }}</h5>
+	</div>
+	<div class="left">
+		<p><h5>{{ animes.content }}</h5></p>
+		<p><h5>{{ animes.genre[0] }}</h5></p>
+		{% for post in posts %}
+			<article class="media content-section">
+			  <div class="media-body">
+				<div class="article-metadata">
+				  <h5><p class="article-content">{{ post }}</p></h5>
+				</div>
+			  </div>
+			</article>
+		{% endfor %}
+	</div>
+
+
+
 {% endblock content %}

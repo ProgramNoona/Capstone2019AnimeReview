@@ -5,8 +5,7 @@ Created on Sat Mar  2 04:13:46 2019
 @author: Mike
 """
 from flaskapp import app, db
-from flaskapp.models import User, Post, AnimeSeries, Producer, Studio, Type, Genre
-from flask import url_for
+from flaskapp.models import User, Post, AnimeSeries, AnimeGenre, AnimeType, Producer, Studio, Type, Genre
 import csv
 from google_images_download import google_images_download 
 
@@ -28,31 +27,27 @@ def loadCSV(name):
         fileName = csv.reader(f)
         next(fileName, None)
         for line in fileName:
-            animeID,name,premiered,genre,typeCategory,episodes,producer,licensor,studio,source,scored,scoredBy,members,briefContent,content = line[0],line[1],line[2],line[3],line[4],line[5],line[6],line[7],line[8],line[9],line[10],line[11],line[12],line[13],line[14]
-            briefContent = content[0:200]
-            anime = [animeID,name,premiered,genre,typeCategory,episodes,producer,licensor,studio,source,scored,scoredBy,members,briefContent,content]
-            thumbnail = "{}".format(name) + ".jpg"
-            pic1 = "{}".format(name) + ".jpg"
-            pic2 = "{}".format(name) + ".jpg"
+            animeID,name,premiered,genre,typeCategory,episodes,producer,licensor,studio,source,scored,scoredBy,members = line[0],line[1],line[2],line[3],line[4],line[5],line[6],line[7],line[8],line[9],line[10],line[11],line[12]
+            anime = [animeID,name,premiered,genre,typeCategory,episodes,producer,licensor,studio,source,scored,scoredBy,members]
 #            imagedownloader(name)
             animeList.append(anime)
-            populateDatabase(animeID,name,premiered,genre,typeCategory,episodes,producer,licensor,studio,source,scored,scoredBy,members,thumbnail,pic1,pic2,briefContent,content)
         print()
     print('done')
+    populateDatabase(animeID,name,premiered,genre,typeCategory,episodes,producer,licensor,studio,source,scored,scoredBy,members,thumbnail,pic1,pic2)
 
-def populateDatabase(animeID,name,premiered,genre,typeCategory,episodes,producer,licensor,studio,source,scored,scoredBy,members,thumbnail,pic1,pic2,briefContent,content):
+def populateDatabase(animeID,name,premiered,genre,typeCategory,episodes,producer,licensor,studio,source,scored,scoredBy,members,thumbnail,pic1,pic2):
     db.create_all()
     
-    animeTemp = AnimeSeries(animeTitle=name, content=content, premiered=premiered, episodes=episodes, 
-                         scored=scored, thumbnail=thumbnail, pic1=pic1, pic2=pic2, briefContent=briefContent)
+    animeTemp = AnimeSeries(animeTitle=name, content='Super super awesome anime', premiered=premiered, episodes=episodes, 
+                         scored=scored, thumbnail=thumbnail, pic1=pic1, pic2=pic2)
     db.session.add(animeTemp)
     producerTemp = Producer(producer=producer)
     db.session.add(producerTemp)
-    studioTemp = Studio(studio=studio)
+    studioTemp = Studio(producer=producer)
     db.session.add(studioTemp)
     typeTemp = Type(typeCategory=typeCategory)
     db.session.add(typeTemp)
-    genreTemp = Genre(genre=genre, animeseries=animeTemp)
+    genreTemp = Genre(genre=genre)
     db.session.add(genreTemp)
     
     db.session.commit()
@@ -65,7 +60,5 @@ def imagedownloader(name):
     print(paths)   #printing absolute paths of the downloaded images
     return('done')
     
-def renamePicture():
-    print()
         
 main()
