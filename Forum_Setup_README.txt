@@ -20,7 +20,11 @@ run anaconda prompt as administrator & install the libraries below
 * FROM THE REPOSITORY
 *
 * https://git-scm.com/downloads		(git download)
-*gi
+*
+
+
+* Enter the commands throughout this guide:
+
 
 pip install --upgrade pip setuptools
 
@@ -67,7 +71,38 @@ flaskbb --config flaskbb.cfg install	(installation. It is recommended to create 
 
 flaskbb --config flaskbb.cfg run	(	run the the development server.
 						visit  "localhost:5000" to test the connection	)
-
 					
+flaskbb makeconfig -d
+
+flaskbb --config flaskbb.cfg run	
+
+
+/*
+
+In the flaskbb folder, find the file 'flaskbb.cfg' and edit the file with notepad++
+
+Find the 'Redis' section. Change the following:
+- REDIS_ENABLED = True
+
+Find the 'Celery' section. Change the following:
+- CELERY_BROKER_URL = REDIS_URL
+- CELERY_RESULT_BACKEND = REDIS_URL
+
+Find the 'Caching section'. Change the following:
+- CACHE_TYPE = "redis"
+- CACHE_REDIS_URL = REDIS_URL
+
+Find the 'Rate limiting' section. Change the following:
+- RATELIMIT_ENABLE = TRUE
+- RATELIMIT_STORAGE_URL = REDIS_URL
+
+*
+* Additionally I've set up the connection to for accessing the forum in a website using pythonanywhere.
+* I will not include the configuration because its already been done.
+*
+* You can visit the actual website here:	http://alopez.pythonanywhere.com/
+* 
+* Enjoy!
+*
 
 
