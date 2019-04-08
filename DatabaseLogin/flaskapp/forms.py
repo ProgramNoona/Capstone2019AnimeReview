@@ -67,23 +67,12 @@ class PostForm(FlaskForm):
     submit = SubmitField('Post')
     
 class AnimeForm(FlaskForm):
-    animeTitle = StringField('Anime Title', 
-                           validators=[DataRequired(), Length(min=2, max=30)])
-    content = StringField('Synopsis', 
-                        validators=[DataRequired()])
-    premiered = StringField('Premiered', 
-                           validators=[DataRequired(), Length(min=2, max=30)])
-    episodes = StringField('Episodes', 
-                        validators=[DataRequired()])
-    scored = StringField('Scored', 
-                        validators=[DataRequired()])
-    thumbnail = FileField('thumbnail', 
-                        validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
-    pic1 = FileField('thumbnail', 
-                        validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
-    pic2 = FileField('thumbnail', 
-                        validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
-    briefContent = StringField('Premiered', 
-                           validators=[DataRequired(), Length(min=2, max=200)])
-    
+    animeTitle = StringField('Anime Title', validators=[DataRequired()])
+    content = StringField('Synopsis', validators=[DataRequired()])
+    premiered = StringField('Premiered', validators=[DataRequired(), Length(min=2, max=30)])
+    episodes = StringField('Episodes', validators=[DataRequired()])
+    scored = StringField('Scored', validators=[DataRequired()])
+    thumbnail = FileField('Thumbnail', validators=[FileAllowed(['jpg'])])
+    pic1 = FileField('Thumbnail', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
+    pic2 = FileField('Thumbnail', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     submit = SubmitField('Submit')

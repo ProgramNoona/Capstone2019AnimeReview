@@ -69,6 +69,7 @@ def save_picture(form_picture):
     i.save(picture_path)
     return picture_fn
 
+
 @app.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
@@ -97,22 +98,28 @@ def anime():
         abort(403)
     form = AnimeForm()
     if form.validate_on_submit():
-            anime = AnimeSeries(animeTitle=form.animeTitle.data, content=form.content.data)
-            db.session.add(anime)
-            db.session.commit()
-            flash('Anime added!', 'success')
-    return render_template('anime.html', title='Anime', form=form)
+        anime = AnimeSeries(animeTitle=form.animeTitle.data, content=form.content.data, premiered=form.premiered.data, 
+                            episodes=form.episodes.data, scored=form.scored.data, thumbnail=form.thumbnail.data, 
+                            pic1=form.pic1.data, pic2=form.pic2.data, briefContent=form.content.data[0:200])
+        db.session.add(anime)
+        db.session.commit()
+        flash('Anime added!', 'success')
+        return redirect(url_for('home'))
+    return render_template('anime.html', title='Anime', form=form, legend='New Anime')
 
 @app.route("/post/new", methods=['GET', 'POST'])
 @login_required
 def new_post():
     form = PostForm()
-    if form.validate_on_submit():
-        post = Post(animeseries_id=form.animeseries_id.data, title=form.title.data, content=form.content.data, author=current_user)
-        db.session.add(post)
-        db.session.commit()
-        flash('Your post has been created!', 'success')
-        return redirect(url_for('home'))
+    try:
+        if form.validate_on_submit():
+            post = Post(animeseries_id=form.animeseries_id.data, title=form.title.data, content=form.content.data, author=current_user)
+            db.session.add(post)
+            db.session.commit()
+            flash('Your post has been created!', 'success')
+            return redirect(url_for('home'))
+    except:
+        print("error")
     return render_template('create_post.html', title='New post', form=form, legend='New Post')
 
 @app.route("/post/<int:post_id>")
