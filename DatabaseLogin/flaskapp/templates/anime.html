@@ -5,82 +5,77 @@ about.html
 -->
 {% extends "layout.html" %}
 {% block content %}
-	<div class="content-section">
-		<form method="POST" action="">
-			{{ form.hidden_tag() }}
-			<fieldset class="form-group">
-				<legend class="border-bottom mb-4">Submit Anime</legend>
-				<div class="form-group">
-					{{ form.animeTitle.label(class="form-control-label") }}
-					
-					{% if form.animeTitle.errors %}
-						{{ form.animeTitle(class="form-control form-control-lg is-invalid") }}
-						<div class="invalid-feedback">
-							{% for error in form.animeTitle.errors %}
-								<span>{{ error }}</span>
-							{% endfor %}
-						</div>
-					{% else %}
-						{{ form.animeTitle(class="form-control form-control-lg") }}
-					{% endif %}
-
-				</div>
-				<div class="form-group">
-					{{ form.content.label(class="form-control-label") }}
-					{% if form.content.errors %}
-						{{ form.content(class="form-control form-control-lg is-invalid") }}
-						<div class="invalid-feedback">
-							{% for error in form.content.errors %}
-								<span>{{ error }}</span>
-							{% endfor %}
-						</div>
-					{% else %}
-						{{ form.content(class="form-control form-control-lg") }}
-					{% endif %}
-				</div>
-				<div class="form-group">
-					{{ form.premiered.label(class="form-control-label") }}
-					
-					{% if form.premiered.errors %}
-						{{ form.premiered(class="form-control form-control-lg is-invalid") }}
-						<div class="invalid-feedback">
-							{% for error in form.premiered.errors %}
-								<span>{{ error }}</span>
-							{% endfor %}
-						</div>
-					{% else %}
-						{{ form.premiered(class="form-control form-control-lg") }}
-					{% endif %}
-				</div>
-				<div class="form-group">
-					{{ form.episodes.label(class="form-control-label") }}
-					
-					{% if form.episodes.errors %}
-						{{ form.episodes(class="form-control form-control-lg is-invalid") }}
-						<div class="invalid-feedback">
-							{% for error in form.episodes.errors %}
-								<span>{{ error }}</span>
-							{% endfor %}
-						</div>
-					{% else %}
-						{{ form.episodes(class="form-control form-control-lg") }}
-					{% endif %}
-				</div>
-				<div class="form-group">
-					{{ form.scored.label(class="form-control-label") }}
-					
-					{% if form.scored.errors %}
-						{{ form.scored(class="form-control form-control-lg is-invalid") }}
-						<div class="invalid-feedback">
-							{% for error in form.scored.errors %}
-								<span>{{ error }}</span>
-							{% endfor %}
-						</div>
-					{% else %}
-						{{ form.scored(class="form-control form-control-lg") }}
-					{% endif %}
-				</div>
-				<div class="form-group">
+<div class="content-section">
+	<form method="POST" action="">
+		{{ form.hidden_tag() }}
+		<fieldset class="form-group">
+			<legend class="border-bottom mb-4">{{ legend }}</legend>
+			<div class="form-group">
+				{{ form.animeTitle.label(class="form-control-label") }}
+				{% if form.animeTitle.errors %}
+					{{ form.animeTitle(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.animeTitle.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% else %}
+					{{ form.animeTitle(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
+			<div class="form-group">
+				{{ form.content.label(class="form-control-label") }}
+				{% if form.content.errors %}
+					{{ form.content(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.content.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% else %}
+					{{ form.content(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
+			<div class="form-group">
+				{{ form.premiered.label(class="form-control-label") }}
+				{% if form.premiered.errors %}
+					{{ form.premiered(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.premiered.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% else %}
+					{{ form.premiered(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
+			<div class="form-group">
+				{{ form.episodes.label(class="form-control-label") }}
+				{% if form.episodes.errors %}
+					{{ form.episodes(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.episodes.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% else %}
+					{{ form.episodes(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
+			<div class="form-group">
+				{{ form.scored.label(class="form-control-label") }}
+				{% if form.scored.errors %}
+					{{ form.scored(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.scored.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% else %}
+					{{ form.scored(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
+			<div class="form-group">
 					{{ form.thumbnail.label() }}
 					{{ form.thumbnail(class="form-control-file") }}
 					{% if form.thumbnail.errors %}
@@ -89,7 +84,7 @@ about.html
 						{% endfor %}
 					{% endif %}
 				</div>
-				<div class="form-group">
+			<div class="form-group">
 					{{ form.pic1.label() }}
 					{{ form.pic1(class="form-control-file") }}
 					{% if form.pic1.errors %}
@@ -98,7 +93,7 @@ about.html
 						{% endfor %}
 					{% endif %}
 				</div>
-				<div class="form-group">
+			<div class="form-group">
 					{{ form.pic2.label() }}
 					{{ form.pic2(class="form-control-file") }}
 					{% if form.pic2.errors %}
@@ -107,10 +102,10 @@ about.html
 						{% endfor %}
 					{% endif %}
 				</div>
-			</fieldset>
-			<div class="form-group">
-				{{ form.submit(class="btn btn-outline-info") }}
-			</div>
-		</form>
-	</div>
+		</fieldset>
+		<div class="form-group">
+			{{ form.submit(class="btn btn-outline-info") }}
+		</div>
+	</form>
+</div>
 {% endblock content %}
