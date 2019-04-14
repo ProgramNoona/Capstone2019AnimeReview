@@ -13,7 +13,6 @@ pip install flask-bcrypt
 pip install flask-login
 pip install flask
 pip install flask-wtf
-pip install flask-SQLAlchemy
 pip install sqlalchemy
 pip install Pillow
 pip install sqlalchemy-media
@@ -32,8 +31,16 @@ once running, open your browser and navigate to the following address:
 
 http://127.0.0.1:5000
 
-***** other notes *****
-importcsv.py allows you to specify the csv file (currently anime.csv) to import its variables to the database. Used mainly for first initializing the database and testing purposes. The old database file should be deleted before doing so.
 
-http://127.0.0.1:5000/anime allows you to input anime through a form but is only accessable through the admin username
-email: admin@anirater.com password: apple
+admin login
+-----------
+Username: admin@anirater.com
+Password: apple
+
+
+******************************
+Special notes on program tools
+******************************
+(1.) importcsv.py - This tool is the backbone for populating the database and is used to recreate the database using the anime.csv file. It is continually updated as the file models.py changes. It also currently creates the single admin user (admin@anirater.com). Simply run the file in its current location if you need to recreate site.db and when prompted type anime.csv and hit enter. The bottom function def imagedownloader() can be used to download images from google using specific arguments.
+
+(2.) crud.py - This program is now outdated and doesn't fit the current User table model. It's currently left in for referencing purposes.

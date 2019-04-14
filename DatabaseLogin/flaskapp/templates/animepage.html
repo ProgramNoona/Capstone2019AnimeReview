@@ -16,7 +16,65 @@ about.html
 	</div>
 	<div class="left">
 		<p><h5>{{ animes.content }}</h5></p>
-		<p><h5>{{ animes.genre[0] }}</h5></p>
+		<h5>Genre:</h5>
+		{% for item in genreList %}
+			<a class="mr-2" href="{{ url_for('genrepage', genre=item) }}">{{ item }}</a>
+		{% endfor %}
+		<h5>Media Type:</h5>
+		{% for item in mediaList %}
+			<a class="mr-2" href="{{ url_for('mediapage', media=item) }}">{{ item }}</a>
+		{% endfor %}
+		<h5>Studio:</h5>
+		{% for item in studioList %}
+			<a class="mr-2" href="{{ url_for('studiopage', studio=item) }}">{{ item }}</a>
+		{% endfor %}
+		<h5>Producer:</h5>
+		{% for item in producerList %}
+			<a class="mr-2" href="{{ url_for('producerpage', producer=item) }}">{{ item }}</a>
+		{% endfor %}
+
+	<h5><div class="content-section">
+	{% if current_user.is_authenticated %}
+		<p><h5>Leave a review!</h5></p>
+		<form method="POST" action="">
+			{{ form.hidden_tag() }}
+			<fieldset class="form-group">
+				<legend class="border-bottom mb-4">{{ legend }}</legend>
+				<div class="form-group">
+					{{ form.title.label(class="form-control-label") }}
+					{% if form.title.errors %}
+						{{ form.title(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.title.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ form.title(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+				<div class="form-group">
+					{{ form.content.label(class="form-control-label") }}
+					{% if form.content.errors %}
+						{{ form.content(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.content.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ form.content(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+			</fieldset>
+			<div class="form-group">
+				{{ form.submit(class="btn btn-outline-info") }}
+			</div>
+		</form>
+	{% else %}
+		<a class="nav-item nav-link" href="{{ url_for('login') }}">Login to leave a review!</a>
+	{% endif %}
+	</div></h5>
 		{% for post in posts %}
 			<article class="media content-section">
 			  <div class="media-body">
@@ -27,7 +85,6 @@ about.html
 			</article>
 		{% endfor %}
 	</div>
-
 
 
 {% endblock content %}

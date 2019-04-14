@@ -87,15 +87,35 @@ a.article-title:hover {
 .left{
   float:left;
 }
+
 .right{
     float:right;
 }
+
 .center{
     float:center;
 }
+
 .justify{
 	float:justify;
 }
+
 .center-right{
 	float:center-right;
+}
+
+.li{
+  display:inline;
+}
+
+.container {
+  display: flex;
+}
+
+.container button:first-child {
+  width: 40%;
+}
+
+.container button:last-child {
+  flex-grow: 5;
 }

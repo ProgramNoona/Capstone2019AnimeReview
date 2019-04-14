@@ -7,7 +7,7 @@ forms.py
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from flaskapp.models import User
 
@@ -19,6 +19,30 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', 
                                      validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Register')
+    
+    def validate_username(self, username):
+        
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('That username is unavailable.')
+            
+    def validate_email(self, email):
+        
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('That email is unavailable.')
+
+class RegisterUserForm(FlaskForm):
+    username = StringField('Username', 
+                           validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email', 
+                        validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', 
+                                     validators=[DataRequired(), EqualTo('password')])
+    admin = StringField('Admin Privileges (y/n)', 
+                                   validators=[DataRequired(), Length(min=1, max=1)])
     submit = SubmitField('Register')
     
     def validate_username(self, username):
@@ -61,9 +85,8 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError('That email is unavailable.')
     
 class PostForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired()])
-    animeseries_id = StringField('Anime Series', validators=[DataRequired()])
+    title = StringField('Title:', validators=[DataRequired()])
+    content = TextAreaField('Review:', validators=[DataRequired()])
     submit = SubmitField('Post')
     
 class AnimeForm(FlaskForm):

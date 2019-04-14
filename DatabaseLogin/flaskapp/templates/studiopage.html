@@ -1,0 +1,25 @@
+<!--
+CSC-289 - Capstone Project - Anime Review Site
+@authors: Michael Blythe, Samuel Blythe, Alex Lopez, Bethany Reagan, Juan Santiago
+about.html
+-->
+{% extends "layout.html" %}
+{% block content %}
+	<div class="left">
+		<h2>Studio: {{ studio }}</h2>
+		{% for item in animeList %}
+			{% for i in item %}
+				<article class="media content-section">
+				  <div class="media-body">
+					<div class="article-metadata">
+					  <a class="mr-2" href="{{ url_for('animepage', animeTitle=i.animeTitle) }}">{{ i.animeTitle }}</a>
+					  <img class="rounded-circle account-img" src="{{ image_file + i.thumbnail}}">
+					</div>
+					<p class="article-content">{{ i.briefContent }}</p>
+				  </div>
+				</article>
+			{% endfor %}
+		{% endfor %}
+	</div>
+
+{% endblock content %}
