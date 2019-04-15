@@ -87,6 +87,8 @@ class UpdateAccountForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('Title:', validators=[DataRequired()])
     content = TextAreaField('Review:', validators=[DataRequired()])
+    rating = SelectField('Rating:', choices=[('10','10'), ('9','9'), ('8','8'), ('7','7'), ('6','6'), ('5','5'),
+                                             ('4','4'), ('3','3'), ('2','2'), ('1','1')])
     submit = SubmitField('Post')
     
 class AnimeForm(FlaskForm):

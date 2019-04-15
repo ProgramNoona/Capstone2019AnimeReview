@@ -10,7 +10,7 @@ from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskapp import app, db, bcrypt
 from flaskapp.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, AnimeForm, RegisterUserForm
-from flaskapp.models import User, Post, AnimeSeries, Genre, AnimeGenre, Studio, AnimeStudio, Media, AnimeMedia, Producer, AnimeProducer
+from flaskapp.models import User, Post, AnimeSeries, Genre, AnimeGenre, Studio, AnimeStudio, Media, AnimeMedia, Producer, AnimeProducer, UserRating
 from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route("/")
@@ -178,24 +178,47 @@ def delete_post(post_id):
 @app.route("/<animeTitle>", methods=['GET', 'POST'])
 def animepage(animeTitle):
     form = PostForm()
+    postValidation = ""
     animes = AnimeSeries.query.filter(AnimeSeries.animeTitle == animeTitle).first()
+    userRating = UserRating.query.filter(UserRating.animeseries_id == animes.id)
+    animeRating = animes.scored
+    
     try:
         if form.validate_on_submit():
             post = Post(animeseries_id=animes.id, title=form.title.data, content=form.content.data, author=current_user)
+            fav = UserRating(user_id=current_user.id, animeseries_id=animes.id, rating=form.rating.data)
+            try:
+                rating=int(form.rating.data)
+                if rating >= 8:
+                    animes.favorites.append(current_user)
+                scored, scoredBy, rating = float(animes.scored), float(animes.scoredBy), float(rating)
+                scored, scoredBy = RatingCalculation(rating, scored, scoredBy)
+                scored, scoredBy = str(round(scored, 2)), str(scoredBy)
+                animes.scored, animes.scoredBy = scored, scoredBy
+            except:
+                print("error2")
             db.session.add(post)
+            db.session.add(fav)
             db.session.commit()
             flash('Your post has been created!', 'success')
+            flash(scored, 'success')
             return redirect(url_for('animepage', animeTitle=animeTitle))
     except:
         print("error")
 
     posts = Post.query.filter_by(animeseries_id = animes.id).all()
+    try:
+        for post in posts:
+            if post.user_id == current_user.id:
+                postValidation = "exists"
+    except:
+        print("No user ID available")
     genreList = getGenre(animes)
     mediaList = getMedia(animes)
     producerList = getProducer(animes)
     studioList = getStudio(animes)
     image_file = url_for('static', filename='anime_thumbnail/downloads/' + animes.animeTitle + '.jpg')
-    return render_template('animepage.html', animes=animes, image_file=image_file, posts=posts, genreList=genreList, mediaList=mediaList, producerList=producerList, studioList=studioList, form=form)
+    return render_template('animepage.html', animes=animes, image_file=image_file, posts=posts, genreList=genreList, mediaList=mediaList, producerList=producerList, studioList=studioList, form=form, animeRating=animeRating, postValidation=postValidation)
 
 @app.route("/genrepage", methods=['GET'])
 @app.route("/genre/<genre>", methods=['GET'])
@@ -325,4 +348,11 @@ def getStudio(animes):
         studioList.append(studioObject.studio)
     return studioList
     
-    
+def RatingCalculation(rating, scored, scoredBy):
+    scoredBy = scoredBy + 1
+    total = scored * scoredBy
+    total += (rating + 5000)
+    scored = (total / scoredBy)
+    scoredBy = int(scoredBy)
+    return scored, scoredBy
+

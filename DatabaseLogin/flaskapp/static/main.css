@@ -104,6 +104,10 @@ a.article-title:hover {
 	float:center-right;
 }
 
+.center-left{
+	float:center-left;
+}
+
 .li{
   display:inline;
 }
@@ -118,4 +122,8 @@ a.article-title:hover {
 
 .container button:last-child {
   flex-grow: 5;
+}
+
+.side {
+   display:inline-block;
 }

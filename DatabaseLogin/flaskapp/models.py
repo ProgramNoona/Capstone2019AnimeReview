@@ -16,6 +16,11 @@ favorites = db.Table('favorites',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('animeseries_id', db.Integer, db.ForeignKey('animeseries.id')))
 
+class UserRating(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    animeseries_id = db.Column(db.Integer, db.ForeignKey('animeseries.id'), primary_key=True)
+    rating = db.Column(db.Integer)
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -25,6 +30,7 @@ class User(db.Model, UserMixin):
     admin = db.Column(db.String(1), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
     favorites = db.relationship('AnimeSeries', secondary=favorites, backref=db.backref('favorites', lazy='dynamic'))
+    ratings = db.relationship('UserRating', backref='favorites', lazy='dynamic')
     
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"

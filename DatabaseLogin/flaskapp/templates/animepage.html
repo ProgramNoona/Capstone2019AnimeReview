@@ -32,45 +32,65 @@ about.html
 		{% for item in producerList %}
 			<a class="mr-2" href="{{ url_for('producerpage', producer=item) }}">{{ item }}</a>
 		{% endfor %}
-
+	<p></p>
 	<h5><div class="content-section">
 	{% if current_user.is_authenticated %}
-		<p><h5>Leave a review!</h5></p>
-		<form method="POST" action="">
-			{{ form.hidden_tag() }}
-			<fieldset class="form-group">
-				<legend class="border-bottom mb-4">{{ legend }}</legend>
-				<div class="form-group">
-					{{ form.title.label(class="form-control-label") }}
-					{% if form.title.errors %}
-						{{ form.title(class="form-control form-control-lg is-invalid") }}
-						<div class="invalid-feedback">
-							{% for error in form.title.errors %}
-								<span>{{ error }}</span>
-							{% endfor %}
-						</div>
-					{% else %}
+		{% if postValidation != "exists" %}
+			<p><h5>Leave a review!</h5></p>
+			<form method="POST" action="">
+				{{ form.hidden_tag() }}
+				<fieldset class="form-group">
+					<legend class="border-bottom mb-4">{{ legend }}</legend>
+					<div class="right" style="width:90px; float:left>
+						{{ form.rating.label(class="form-control-label") }}
+						{% if form.rating.errors %}
+							{{ form.rating(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.rating.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.rating(class="form-control form-control-lg") }}
+						{% endif %}
+					</div>
+					<div class="left" style="width:500px; float:left>
+						{{ form.title.label(class="form-control-label") }}
+						{% if form.title.errors %}
+							{{ form.title(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.title.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
 						{{ form.title(class="form-control form-control-lg") }}
-					{% endif %}
-				</div>
+						{% endif %}
+					</div>
+					<p></p>
+					<div style="clear: both;"></div>
+					<p></p>
+					<div class="bottom">
+						{{ form.content.label(class="form-control-label") }}
+						{% if form.content.errors %}
+							{{ form.content(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.content.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.content(class="form-control form-control-lg") }}
+						{% endif %}
+					</div>
+				</fieldset>
 				<div class="form-group">
-					{{ form.content.label(class="form-control-label") }}
-					{% if form.content.errors %}
-						{{ form.content(class="form-control form-control-lg is-invalid") }}
-						<div class="invalid-feedback">
-							{% for error in form.content.errors %}
-								<span>{{ error }}</span>
-							{% endfor %}
-						</div>
-					{% else %}
-						{{ form.content(class="form-control form-control-lg") }}
-					{% endif %}
+					{{ form.submit(class="btn btn-outline-info") }}
 				</div>
-			</fieldset>
-			<div class="form-group">
-				{{ form.submit(class="btn btn-outline-info") }}
-			</div>
-		</form>
+			</form>
+		{% else %}
+			<h5>You have already posted a review</h5>
+		{% endif %}
 	{% else %}
 		<a class="nav-item nav-link" href="{{ url_for('login') }}">Login to leave a review!</a>
 	{% endif %}
