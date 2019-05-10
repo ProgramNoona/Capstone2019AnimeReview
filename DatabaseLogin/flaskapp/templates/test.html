@@ -1,0 +1,96 @@
+<!--
+CSC-289 - Capstone Project - Anime Review Site
+@authors: Michael Blythe, Samuel Blythe, Alex Lopez, Bethany Reagan, Juan Santiago
+about.html
+-->
+{% extends "layout.html" %}
+{% block content %}
+	<h4>fav</h4>
+	{% for v in fav %}
+		{{ v }}
+	{% endfor %}
+	<p></p>
+	{% for f in favList %}
+		{{ f }}
+	{% endfor %}
+	<p></p>
+	<h4>Favorite genre lists</h4>
+	{% for item in testList3 %}
+		{{ item }}
+	{% endfor %}
+	<h4>testList</h4>
+	{% for item2 in testList %}
+		{{ item2 }}
+	{% endfor %}
+	<h4>merged favorite lists mergeList</h4>
+	{{ count2 }}
+	{{ mergeList }}
+	<p></p>
+	<h4>mergeSet</h4>
+	{{ mergeSet }}
+	<p></p>
+	<h4>mergeList2 sorted</h4>
+	{{ mergeList2 }}
+	<p></p>
+	<h4>testing</h4>
+	<p></p>
+	<h5>Genre Number</h5>
+	{% for g in genreList %}
+		{{ g }}
+	{% endfor %}
+	<h5>Number of occurrences</h5>
+	{% for i in numberCount %}
+		{{ i }}
+	{% endfor %}
+	<br></br>
+	<h4>testing2</h4>
+	{{ genreList }}
+	{{ numberCount }}
+	<p></p>
+	<h4>genreDict</h4>
+	{{ genreDict }}
+	<p></p>
+	{{ genreDictSorted }}
+	<p></p>
+	<h4>test3</h4>
+	{% for t in test3 %}
+		{{ t }}
+	{% endfor %}
+	<h4>suggestedAnimeList</h4>
+	{% for k in suggestedAnimeList %}
+		{{ k }}
+	{% endfor %}
+	<p></p>
+	<h4>usedAnimeList</h4>
+	{% for s in usedAnimeList %}
+		{{ s }}
+	{% endfor %}
+	{{ usedAnimeList }}
+	<p></p>
+	<h4>suggestedAnimeCount</h4>
+	{% for a in suggestedAnimeCount %}
+		{{ a }}
+	{% endfor %}
+	{{ suggestedAnimeCount }}
+	<p></p>
+	<h4>Dictionary</h4>
+	{% for d in suggestedAnimeDict %}
+		{{ d }}
+	{% endfor %}
+	<p></p>
+	{{ suggestedAnimeDict }}
+	<p></p>
+	<h4>suggestedAnimeDictSorted</h4>
+	{{ suggestedAnimeDictSorted }}
+	<p></p>
+	<h4>suggestedAnime</h4>
+	{{ suggestedAnime.animeTitle }}
+	<p></p>
+	<h4>-------------------</h4>
+	<h4>default dictionary</h4>
+	{% for j in defaultDict %}
+		{{j}}
+	{% endfor %}
+	<h4>default dictionary sorted</h4>
+	{{ defaultDictSorted }}
+{% endblock content %}

@@ -101,3 +101,11 @@ class AnimeForm(FlaskForm):
     pic1 = FileField('Thumbnail', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     pic2 = FileField('Thumbnail', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     submit = SubmitField('Submit')
+    
+class SearchForm(FlaskForm):
+    searchVar = StringField('User Search', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class DeletePostForm(FlaskForm):
+    searchVar = StringField('Post ID', validators=[DataRequired()])
+    submit = SubmitField('Submit')

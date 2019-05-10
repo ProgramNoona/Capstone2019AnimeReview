@@ -1,0 +1,48 @@
+<!--
+CSC-289 - Capstone Project - Anime Review Site
+@authors: Michael Blythe, Samuel Blythe, Alex Lopez, Bethany Reagan, Juan Santiago
+about.html
+-->
+{% extends "layout.html" %}
+{% block content %}
+	<p></p>
+	<h3><center>Admin Tools Page</center></h3>
+	<br></br>
+	<h4>Add to database</h4>
+	<p></p>
+
+	<ul>
+		<li><p><a class="mr-2" href="{{ url_for('anime') }}">Add Anime</a></p></li>
+		<li><p><a class="mr-2" href="{{ url_for('register_user') }}">Add User</a></p></li>
+	</ul>
+
+	<br></br>
+	<h4>Moderation</h4>
+	<p></p>
+	<div class="container">
+		<form method="POST" action="">
+			{{ form.hidden_tag() }}
+			<fieldset class="form-group">
+				<div class="form-group">
+					{{ form.searchVar.label(class="form-control-label") }}
+					{% if form.searchVar.errors %}
+						{{ form.searchVar(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.searchVar.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ form.searchVar(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+			</fieldset>
+			<div class="form-group">
+				{{ form.submit(class="btn btn-outline-info") }}
+			</div>
+		</form>
+	</div>
+	
+	
+
+{% endblock content %}

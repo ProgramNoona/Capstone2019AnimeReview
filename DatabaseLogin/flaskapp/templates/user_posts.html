@@ -1,0 +1,47 @@
+<!--
+CSC-289 - Capstone Project - Anime Review Site
+@authors: Michael Blythe, Samuel Blythe, Alex Lopez, Bethany Reagan, Juan Santiago
+about.html
+-->
+{% extends "layout.html" %}
+{% block content %}
+	<p></p>
+	<h3><center>Delete User Post Page</center></h3>
+	<hr></hr>
+	<br></br>
+	{% if result != none %}
+		{% for post in result %}
+			<h4>Post ID: {{ post.id }}</h4>
+			<h5 class="articale-title">{{ post }}</h5>
+			<hr></hr>
+
+		{% endfor %}
+		<div class="container">
+			<form method="POST" action="">
+				{{ form.hidden_tag() }}
+				<fieldset class="form-group">
+					<div class="form-group">
+						{{ form.searchVar.label(class="form-control-label") }}
+						{% if form.searchVar.errors %}
+							{{ form.searchVar(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.searchVar.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.searchVar(class="form-control form-control-lg") }}
+						{% endif %}
+					</div>
+				</fieldset>
+				<div class="form-group">
+					{{ form.submit(class="btn btn-outline-info") }}
+				</div>
+			</form>
+		</div>
+	{%else%}
+		<h3>No Posts Found</h3>
+	{%endif%}
+	<br></br>
+	<p><a class="mr-2" href="{{ url_for('admintools') }}">Back to Admintools</a></p>
+{% endblock content %}

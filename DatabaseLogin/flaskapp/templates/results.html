@@ -1,0 +1,65 @@
+<!--
+CSC-289 - Capstone Project - Anime Review Site
+@authors: Michael Blythe, Samuel Blythe, Alex Lopez, Bethany Reagan, Juan Santiago
+about.html
+-->
+{% extends "layout.html" %}
+{% block content %}
+	<p></p>
+	<h3><center>User Moderation Page</center></h3>
+	<br></br>
+	{% if result == none %}
+	<h4>No user found!</h4>
+	<hr></hr>
+	<br></br>
+	<p><a class="mr-2" href="{{ url_for('admintools') }}">Back to Admintools</a></p>
+	{% elif result.admin == 'y' %}
+	<h4>User found!</h4>
+	<hr></hr>
+	<p></p>
+	<h4>User ID: {{ result.id }}</h4>
+	<h4>Username: {{ result.username }}</h4>
+	<h4>Email: {{ result.email }}</h4>
+	<br></br>
+	<hr></hr>
+	<h4>Error: Delete Admin Not Allowed</h4>
+	<br></br>
+	<p><a class="mr-2" href="{{ url_for('admintools') }}">Back to Admintools</a></p>
+	{% else %}
+	<h4>User found</h4>
+	<hr></hr>
+	<br></br>
+	<h4>User ID: {{ result.id }}</h4>
+	<h4>Username: {{ result.username }}</h4>
+	<h4>Email: {{ result.email }}</h4>
+	<h4><a class="mr-2" href="{{ url_for('user_posts', searchVariable=searchVariable) }}">View User Posts</a></h4>
+	<br></br>
+	<h4>Delete User?</h4>
+	<p></p>
+	<div>
+		<button type"button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="deleteModalLabel">Delete User?</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<form action="{{ url_for('delete_user', result_id=result.id) }}" method="POST">
+				<input class="btn btn-danger" type="submit" value="Delete">
+			</form>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	<hr></hr>
+	<br></br>
+	<p><a class="mr-2" href="{{ url_for('admintools') }}">Back to Admintools</a></p>
+	{%endif%}
+{% endblock content %}

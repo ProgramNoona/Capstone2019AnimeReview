@@ -10,9 +10,9 @@ home.html
 		  <div class="media-body">
 			<div class="article-metadata">
 			  <a class="mr-2" href="{{ url_for('animepage', animeTitle=anime.animeTitle) }}">{{ anime.animeTitle }}</a>
-			  <img class="rounded-circle account-img" src="{{ image_file + anime.thumbnail}}">
+			  <a class="mr-2" href="{{ url_for('animepage', animeTitle=anime.animeTitle) }}"><img class="rounded-circle account-img" src="{{ image_file + anime.thumbnail}}"></a>
 			</div>
-			<p class="article-content">{{ anime.briefContent }}</p>
+			<p class="article-content">{{ anime.briefContent }}... read more</p>
 		  </div>
 		</article>
 	{% endfor %}

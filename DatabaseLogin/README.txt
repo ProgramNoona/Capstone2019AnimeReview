@@ -16,7 +16,6 @@ pip install flask-wtf
 pip install sqlalchemy
 pip install Pillow
 pip install sqlalchemy-media
-pip install flask_sqlalchemy
 
 After you have installed the libraries, navigate to the directory containing the program "run.py" in anaconda prompt:
 

@@ -11,10 +11,32 @@ import csv
 from google_images_download import google_images_download 
 
 def main():
-    CreateAdmin()
-    PopulateDatabase()
+    Menu()
     
-def CreateAdmin():
+def Menu():
+    print('CRUD: Database modifications menu')
+    print()
+    print('1. Create database from CSV')
+    print('2. Create database from CSV plus download images')
+    print('3. Exit')
+    print()
+    userChoice = input('Choose an option: ')
+    
+    if userChoice in ('1'):
+        downloadimages = 'n'
+        CreateAdmin(downloadimages)
+    elif userChoice in ('2'):
+        downloadimages = 'y'
+        CreateAdmin(downloadimages)
+    elif userChoice in ('3'):
+        exit()
+    else:
+        print()
+        print('Please choose an option above')
+        print()
+        main()
+    
+def CreateAdmin(downloadimages):
     username="admin"
     email="admin@anirater.com"
     password="apple"
@@ -24,8 +46,9 @@ def CreateAdmin():
     user = User(username=username, email=email, password=hashed_password, admin=admin)
     db.session.add(user)
     db.session.commit()
+    PopulateDatabase(downloadimages)
     
-def PopulateDatabase():
+def PopulateDatabase(downloadimages):
     count = 0
     genreSet = set()
     mediaSet = set()
@@ -61,6 +84,8 @@ def PopulateDatabase():
                 producerSet.add(item)
             for item in studioList:
                 studioSet.add(item)
+            if downloadimages in ('y'):
+                imagedownloader(name)
         genreList = list(genreSet)
         mediaList = list(mediaSet)
         producerList = list(producerSet)

@@ -66,7 +66,17 @@ class AnimeSeries(db.Model):
     producer = db.relationship('AnimeProducer', backref='anime_producer', lazy=True)
 
     def __repr__(self):
-        return f"AnimeSeries('{self.animeTitle}', '{self.content}')"
+        genreID = []
+        for item in self.genre:
+            item = str(item)
+            item = item.replace("<", "")
+            item = item.replace(">", "")
+            item = item.replace("AnimeGenre", "")
+            item = item.replace(" ", "")
+            item = item.split(",")
+            item = item[1]
+            genreID.append(item)
+        return f"{self.id}" + "-" + f"{genreID}"
 
 class Producer(db.Model):
     id = db.Column(db.Integer, primary_key=True)

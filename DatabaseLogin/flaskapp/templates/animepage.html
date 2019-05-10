@@ -6,7 +6,7 @@ about.html
 {% extends "layout.html" %}
 {% block content %}
 	<div class="media">
-		<img class="rounded-circle right" src="{{ image_file }}">
+		<img class="rounded-circle right" src="{{ image_file + animes.thumbnail}}">
 	</div>
 	<h1>{{ animes.animeTitle }}</h1>
 	<div class="center">
@@ -95,15 +95,23 @@ about.html
 		<a class="nav-item nav-link" href="{{ url_for('login') }}">Login to leave a review!</a>
 	{% endif %}
 	</div></h5>
-		{% for post in posts %}
+		{% for post in posts2 %}
 			<article class="media content-section">
 			  <div class="media-body">
 				<div class="article-metadata">
 				  <h5><p class="article-content">{{ post }}</p></h5>
+					{% set cnt = loop.index0 %}
+					{% set ratingList = [] %}
+					{%for r in userRating %}
+						{% set item = r.rating %}
+						{% if ratingList.append(item) %}{% endif %}
+					{% endfor %}
+					<h5 class="right">Rating: {{ ratingList[cnt] }}</h5>
 				</div>
 			  </div>
 			</article>
 		{% endfor %}
+		<div style="clear: both;"></div>
 	</div>
 
 
