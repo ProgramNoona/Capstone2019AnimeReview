@@ -4,40 +4,39 @@ CSC-289 - Capstone Project - Anime Review Site
 @authors: Michael Blythe, Samuel Blythe, Alex Lopez, Bethany Reagan, Juan Santiago
 routes.py
 """
-import os
-import secrets
-from PIL import Image
+
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskapp import app, db, bcrypt
-from flaskapp.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, AnimeForm, RegisterUserForm, SearchForm, DeletePostForm
-from flaskapp.models import User, Post, AnimeSeries, Genre, AnimeGenre, Studio, AnimeStudio, Media, AnimeMedia, Producer, AnimeProducer, UserRating
+from flaskapp.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, AnimeForm, RegisterUserForm, SearchUserForm, DeletePostForm, SearchAnimeForm
+from flaskapp.models import User, Post, AnimeSeries, Genre, AnimeGenre, Studio, AnimeStudio, Media, AnimeMedia, Producer, AnimeProducer, UserRating, UserPassList
 from flask_login import login_user, current_user, logout_user, login_required
-from sqlalchemy import and_
+from flaskapp.suggestedcontent import SuggestedContent
+from flaskapp.utilities import AnimeSortQuery, save_picture, save_thumbnail, recentPost, randomAnime, getAnime, getGenre, getMedia, getProducer, getStudio, RatingCalculation
 
 @app.route("/")
 @app.route("/home")
 def home():
-    animes = AnimeSeries.query.all()
-#    animes = AnimeSeries.query.limit(5)
+    suggestedAnime = SuggestedContent(current_user)
+    count2 = 4
+    animes, animes2 = AnimeSortQuery(count2)
+    randomAnimeChoice = randomAnime()
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
-    return render_template('home.html', animes=animes, image_file=image_file, post=post, suggestedAnime=suggestedAnime, posts=posts)
+    suggestedAnime = SuggestedContent(current_user)
+    return render_template('home.html', animes=animes, animes2=animes2, image_file=image_file, post=post, suggestedAnime=suggestedAnime, posts=posts, randomAnimeChoice=randomAnimeChoice)
 
 @app.route("/about")
 def about():
-    post = Post.query.all()
-    lenCount = len(post)
-    posts = post[lenCount - 1]
+    posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     return render_template('about.html', title='About', suggestedAnime=suggestedAnime, image_file=image_file, posts=posts)
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = RegistrationForm()
@@ -55,7 +54,7 @@ def register():
 def login():
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = LoginForm()
@@ -74,23 +73,13 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-def save_picture(form_picture):
-    random_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
-    i = Image.open(form_picture)
-    i = i.resize((125,125))
-    i.save(picture_path)
-    return picture_fn
-
 
 @app.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
@@ -104,8 +93,8 @@ def account():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
-    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('account.html', title='Account', image_file=image_file, form=form, suggestedAnime=suggestedAnime, posts=posts)
+    image_file2 = url_for('static', filename='profile_pics/' + current_user.image_file)
+    return render_template('account.html', title='Account', image_file=image_file, image_file2=image_file2, form=form, suggestedAnime=suggestedAnime, posts=posts)
 
 @app.route("/anime", methods=['GET', 'POST'])
 @login_required
@@ -117,14 +106,47 @@ def anime():
         abort(403)
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     form = AnimeForm()
     if form.validate_on_submit():
+        animeTitle = form.animeTitle.data
         anime = AnimeSeries(animeTitle=form.animeTitle.data, content=form.content.data, premiered=form.premiered.data, 
-                            episodes=form.episodes.data, scored=form.scored.data, thumbnail=form.thumbnail.data, 
-                            pic1=form.pic1.data, pic2=form.pic2.data, briefContent=form.content.data[0:200])
+                            episodes=form.episodes.data, scored=form.scored.data, scoredBy=form.scoredBy.data, thumbnail=animeTitle, 
+                            pic1=animeTitle, pic2=animeTitle, briefContent=form.content.data[0:200])
         db.session.add(anime)
         db.session.commit()
+        
+        item = form.genre.data
+        item = item.split(",")
+        for i in item:
+            genreTemp = AnimeGenre(animeseries_id=anime.id, genre_id=i)
+            db.session.add(genreTemp)
+            db.session.commit()
+        item = form.media.data
+        item = item.split(",")
+        for i in item:
+            mediaTemp = AnimeMedia(animeseries_id=anime.id, media_id=i)
+            db.session.add(mediaTemp)
+            db.session.commit()
+        item = form.studio.data
+        item = item.split(",")
+        for i in item:
+            studioTemp = AnimeStudio(animeseries_id=anime.id, studio_id=i)
+            db.session.add(studioTemp)
+            db.session.commit()
+        item = form.producer.data
+        item = item.split(",")
+        for i in item:
+            producerTemp = AnimeProducer(animeseries_id=anime.id, producer_id=i)
+            db.session.add(producerTemp)
+            db.session.commit()
+
+        if form.picture.data:
+            picture_file = save_thumbnail(animeTitle, form.picture.data)
+            current_user.image_file = picture_file
+            anime.thumbnail = picture_file
+            db.session.commit()
+        
         flash('Anime added!', 'success')
         return redirect(url_for('home'))
     return render_template('anime.html', title='Anime', form=form, legend='New Anime', suggestedAnime=suggestedAnime, image_file=image_file, posts=posts)
@@ -139,7 +161,7 @@ def register_user():
         abort(403)
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     form = RegisterUserForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -155,7 +177,7 @@ def register_user():
 def new_post():
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     form = PostForm()
     try:
         if form.validate_on_submit():
@@ -172,7 +194,7 @@ def new_post():
 def post(post_id):
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     post = Post.query.get_or_404(post_id)
     return render_template('post.html', title=post.title, post=post, suggestedAnime=suggestedAnime, image_file=image_file, posts=posts)
 
@@ -181,7 +203,7 @@ def post(post_id):
 def update_post(post_id):
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     post = Post.query.get_or_404(post_id)
     if post.author != current_user:
         abort(403)
@@ -205,7 +227,6 @@ def delete_post(post_id):
             abort(403)
     except:
         abort(403)
-    suggestedAnime = SuggestedContent()
     post = Post.query.get_or_404(post_id)
     ratingObject = UserRating.query.filter(UserRating.animeseries_id == post.animeseries_id).first()
     db.session.delete(post)
@@ -222,8 +243,19 @@ def delete_user(result_id):
             abort(403)
     except:
         abort(403)
-    suggestedAnime = SuggestedContent()
     user = User.query.get_or_404(result_id)
+    user_rating = UserRating.query.filter(UserRating.user_id == result_id).all()
+    user_pass = UserPassList.query.filter(UserPassList.user_id == result_id).all()
+    posts = Post.query.filter(Post.user_id == result_id).all()
+    if posts:
+        for item in posts:
+            db.session.delete(item)
+    if user_rating:
+        for item in user_rating:
+            db.session.delete(item)
+    if user_pass:
+        for item in user_pass:
+            db.session.delete(item)
     db.session.delete(user)
     db.session.commit()
     flash('User has been deleted!', 'success')
@@ -233,7 +265,7 @@ def delete_user(result_id):
 @app.route("/<animeTitle>", methods=['GET', 'POST'])
 def animepage(animeTitle):
     posts = recentPost()
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     form = PostForm()
     postValidation = ""
     animes = AnimeSeries.query.filter(AnimeSeries.animeTitle == animeTitle).first()
@@ -249,6 +281,9 @@ def animepage(animeTitle):
                 rating=int(form.rating.data)
                 if rating >= 8:
                     animes.favorites.append(current_user)
+                elif rating < 8:
+                    meh = UserPassList(user_id=current_user.id, animeseries_id=animes.id)
+                    db.session.add(meh)
                 scored, scoredBy, rating = float(animes.scored), float(animes.scoredBy), float(rating)
                 scored, scoredBy = RatingCalculation(rating, scored, scoredBy)
                 scored, scoredBy = str(round(scored, 2)), str(scoredBy)
@@ -259,7 +294,6 @@ def animepage(animeTitle):
             db.session.add(fav)
             db.session.commit()
             flash('Your post has been created!', 'success')
-            flash( scored, 'success')
             return redirect(url_for('animepage', animeTitle=animeTitle))
     except:
         print("error")
@@ -277,7 +311,7 @@ def animepage(animeTitle):
     studioList = getStudio(animes)
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
     image_file2 = url_for('static', filename='gallery_thumbnail/')
-#    image_file = url_for('static', filename='anime_thumbnail/downloads/' + animes.animeTitle + '.jpg')
+
     return render_template('animepage.html', animes=animes, image_file=image_file, image_file2=image_file2, posts=posts, genreList=genreList, mediaList=mediaList, producerList=producerList, studioList=studioList, form=form, animeRating=animeRating, postValidation=postValidation, userRating=userRating, suggestedAnime=suggestedAnime, posts2=posts2)
 
 @app.route("/genrepage", methods=['GET'])
@@ -285,9 +319,8 @@ def animepage(animeTitle):
 def genrepage(genre):
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     tempObject = Genre.query.filter(Genre.genre == genre).first()
-#    animeGenreObject = AnimeGenre.query.filter(AnimeGenre.genre_id == genreObject.id).first()
     animeList = getAnime(tempObject)
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
             
@@ -298,9 +331,8 @@ def genrepage(genre):
 def mediapage(media):
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     tempObject = Media.query.filter(Media.media == media).first()
-#    animeGenreObject = AnimeGenre.query.filter(AnimeGenre.genre_id == genreObject.id).first()
     animeList = getAnime(tempObject)
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
             
@@ -311,9 +343,8 @@ def mediapage(media):
 def producerpage(producer):
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     tempObject = Producer.query.filter(Producer.producer == producer).first()
-#    animeGenreObject = AnimeGenre.query.filter(AnimeGenre.genre_id == genreObject.id).first()
     animeList = getAnime(tempObject)
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
             
@@ -324,9 +355,8 @@ def producerpage(producer):
 def studiopage(studio):
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     tempObject = Studio.query.filter(Studio.studio == studio).first()
-#    animeGenreObject = AnimeGenre.query.filter(AnimeGenre.genre_id == genreObject.id).first()
     animeList = getAnime(tempObject)
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
             
@@ -342,15 +372,13 @@ def admintools():
         abort(403)
     result = ""
     searchVariable = ""
-    form = SearchForm()
+    form = SearchUserForm()
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     
     if form.validate_on_submit():
         searchVariable = form.searchVar.data
-#        result = User.query.filter_by(username=form.searchVar.data).first()
-#        result = User.query.filter(User.username.like(form.searchVar.data))
         return redirect(url_for('results', searchVariable=searchVariable))
         
     return render_template('admintools.html', image_file=image_file, form=form, suggestedAnime=suggestedAnime, result=result, searchVariable=searchVariable, posts=posts)
@@ -365,7 +393,7 @@ def results(searchVariable):
         abort(403)
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     result = User.query.filter_by(username=searchVariable).first()
     return render_template('results.html', image_file=image_file, suggestedAnime=suggestedAnime, searchVariable=searchVariable, result=result, posts=posts)
 
@@ -380,7 +408,7 @@ def user_posts(searchVariable):
     form = DeletePostForm()
     posts = recentPost()
     image_file = url_for('static', filename='anime_thumbnail/downloads/')
-    suggestedAnime = SuggestedContent()
+    suggestedAnime = SuggestedContent(current_user)
     user = User.query.filter_by(username=searchVariable).first()
     result = Post.query.filter_by(user_id=user.id).all()
     
@@ -390,355 +418,46 @@ def user_posts(searchVariable):
 
     return render_template('user_posts.html', image_file=image_file, suggestedAnime=suggestedAnime, searchVariable=searchVariable, result=result, posts=posts, form=form)
 
-def recentPost():
-    post2 = Post.query.all()
-    lenCount = len(post2)
-    posts = post2[lenCount - 1]
-    return posts
-
-def getAnime(tempObject):
-    animeID = []
-    animeList = []
-    for item in tempObject.animeseries:
-        item = str(item)
-        item = item.replace("<", "")
-        item = item.replace(">", "")
-        item = item.replace("AnimeGenre", "")
-        item = item.replace("AnimeMedia", "")
-        item = item.replace("AnimeStudio", "")
-        item = item.replace("AnimeProducer", "")
-        item = item.replace(" ", "")
-        item = item.split(",")
-        item = item[0]
-        animeID.append(item)
-    for item in animeID:
-        animeObject = AnimeSeries.query.filter_by(id=item).all()
-        animeList.append(animeObject)
-    return animeList
-
-def getGenre(animes):
-    genreID = []
-    genreList = []
-    for item in animes.genre:
-        item = str(item)
-        item = item.replace("<", "")
-        item = item.replace(">", "")
-        item = item.replace("AnimeGenre", "")
-        item = item.replace(" ", "")
-        item = item.split(",")
-        item = item[1]
-        genreID.append(item)
-    for item in genreID:
-        genreObject = Genre.query.filter_by(id=item).first()
-        genreList.append(genreObject.genre)
-    return genreList
-
-def getMedia(animes):
-    mediaID = []
-    mediaList = []
-    for item in animes.media:
-        item = str(item)
-        item = item.replace("<", "")
-        item = item.replace(">", "")
-        item = item.replace("AnimeMedia", "")
-        item = item.replace(" ", "")
-        item = item.split(",")
-        item = item[1]
-        mediaID.append(item)
-    for item in mediaID:
-        mediaObject = Media.query.filter_by(id=item).first()
-        mediaList.append(mediaObject.media)
-    return mediaList
-
-def getProducer(animes):
-    producerID = []
-    producerList = []
-    for item in animes.producer:
-        item = str(item)
-        item = item.replace("<", "")
-        item = item.replace(">", "")
-        item = item.replace("AnimeProducer", "")
-        item = item.replace(" ", "")
-        item = item.split(",")
-        item = item[1]
-        producerID.append(item)
-    for item in producerID:
-        producerObject = Producer.query.filter_by(id=item).first()
-        producerList.append(producerObject.producer)
-    return producerList
-
-def getStudio(animes):
-    studioID = []
-    studioList = []
-    for item in animes.studio:
-        item = str(item)
-        item = item.replace("<", "")
-        item = item.replace(">", "")
-        item = item.replace("AnimeStudio", "")
-        item = item.replace(" ", "")
-        item = item.split(",")
-        item = item[1]
-        studioID.append(item)
-    for item in studioID:
-        studioObject = Studio.query.filter_by(id=item).first()
-        studioList.append(studioObject.studio)
-    return studioList
-    
-def RatingCalculation(rating, scored, scoredBy):
-    scoredBy = scoredBy + 1
-    total = scored * scoredBy
-    if rating == 10:
-        total += (rating + 5000)
-    elif rating == 9:
-        total += (rating + 4000)
-    elif rating == 8:
-        total += (rating + 3000)
-    elif rating == 7:
-        total += (rating + 2000)
-    elif rating == 6:
-        total += (rating + 1000)
-    elif rating == 5:
-        total += (rating)
-    elif rating == 4:
-        total += (rating - 1000)
-    elif rating == 3:
-        total += (rating - 2000)
-    elif rating == 2:
-        total += (rating - 3000)
-    elif rating == 1:
-        total += (rating - 4000)
-    scored = (total / scoredBy)
-    scoredBy = int(scoredBy)
-    return scored, scoredBy
-
-
-def SuggestedContent():
-    testList = []
-    favList = []
-    mergeList = []
-    numberCount = []
-    genreList = []
-    topGenreCount = []
-    suggestedAnimeList = []
-    suggestedAnimeCount = []
-    defaultDictSorted = []
-    temp = []
-    usedAnimeList = []
-    suggestedAnimeSet = set()
-    defaultDict = {}
-    genreDict = {}
-    suggestedAnimeDict = {}
-    count = 1
-    count1 = 0
-    count2 = 0
-    count3 = 0
-    count4 = 0
-    count5 = 0
-    count6 = 0
-    
-    try:
-        fav = current_user.favorites
-        for item in fav:
-            item = str(item)
-            item = item.replace("[", "")
-            item = item.replace("]", "")
-            item = item.replace("'", "")
-            item = item.replace(" ", "")
-            item2 = item.split("-")
-            item = item2[1]
-            favItem = item2[0]
-            item = item.split(",")
-            testList.append(item)
-            favList.append(favItem)
-        
-    
-        for item in testList:
-            temp += item
-        for item in temp:
-            mergeList.append(int(item))
-        mergeSet = set(mergeList)
-        mergeList2 = list(mergeSet)
-        mergeList2.sort()
-        for item in mergeList2:
-            number = mergeList.count(item)
-            numberCount.append(number)
-            genreList.append(mergeList2[count1])
-            count += 1
-            count1 += 1
-    
-        for item in mergeList2:
-            value = numberCount[count2]
-            key = genreList[count2]
-            genreDict[key] = value
-            count2 += 1
-        
-        genreDictSorted = sorted(genreDict, key=genreDict.get, reverse=True)
-        
-        for item in genreDictSorted:
-            topGenreCount.append(genreDictSorted[count3])
-            count3 += 1
-        
-        test3 = AnimeGenre.query.filter(AnimeGenre.genre_id.in_(topGenreCount)).all()
-        
-        for item in test3:
-            item = str(item)
-            item = item.replace("<", "")
-            item = item.replace(">", "")
-            item = item.replace("AnimeGenre", "")
-            item = item.replace(" ", "")
-            item = item.split(",")
-            item = item[0]
-            suggestedAnimeList.append(item)
-            
-        for i in range(1,len(suggestedAnimeList) + 1):
-            suggestedAnimeSet.add(suggestedAnimeList[count4])
-            count4 += 1
-        usedAnimeList = list(suggestedAnimeSet)
-        usedAnimeList.sort()
-        
-        for item in usedAnimeList:
-            number2 = suggestedAnimeList.count(item)
-            suggestedAnimeCount.append(number2)
-        
-        for i in range(1,len(usedAnimeList) + 1):
-            value = suggestedAnimeCount[count5]
-            key = usedAnimeList[count5]
-            suggestedAnimeDict[key] = value
-            count5 += 1
-        suggestedAnimeDictSorted = sorted(suggestedAnimeDict, key=suggestedAnimeDict.get, reverse=True)
-        for item in suggestedAnimeDictSorted:
-            tempSuggestedAnime = suggestedAnimeDictSorted[count6]
-            if tempSuggestedAnime in (favList):
-                count6 += 1
-            else:
-                break
-        suggestedAnime = AnimeSeries.query.filter(AnimeSeries.id == tempSuggestedAnime).first()
-        
-    except:
-        defaultAnime = AnimeSeries.query.all()
-        for d in defaultAnime:
-            tempAnimeID = d.id
-            tempScored = d.scored
-            defaultDict[tempAnimeID] = tempScored
-        defaultDictSorted = sorted(defaultDict, key=defaultDict.get, reverse=True)
-        suggestedAnime = AnimeSeries.query.filter(AnimeSeries.id == defaultDictSorted[0]).first()
-    
-    return suggestedAnime
-
-@app.route("/test", methods=['GET', 'POST'])
-def SuggestedContentTest():
-    image_file = url_for('static', filename='anime_thumbnail/downloads/')
+@app.route("/search_results/<searchAnime>", methods=['GET', 'POST'])
+@app.route("/search_results/<searchVariable>", methods=['GET', 'POST'])
+def search_results(searchVariable):
+    letter = searchVariable.replace("%", "")
     posts = recentPost()
+    image_file = url_for('static', filename='anime_thumbnail/downloads/')
+    suggestedAnime = SuggestedContent(current_user)
+    check = len(letter)
+    animes = None
+    animes2 = None
+    if searchVariable == "TopRated" or searchVariable == "NewAdded":
+        defaultAnimeList = AnimeSeries.query.all()
+        count2 = len(defaultAnimeList)
+        animes, animes2 = AnimeSortQuery(count2)
+        if searchVariable == "TopRated":
+            searchAnime = animes
+            searchTitle = "Top Rated"
+        elif searchVariable == "NewAdded":
+            searchAnime = animes2
+            searchTitle = "Newest Added"
+    elif searchVariable in ('A%','B%','C%','D%','E%','F%','G%','H%','I%','J%','K%','L%','M%',
+                      'N%','O%','P%','Q%','R%','S%','T%','U%','V%','W%','X%','Y%','Z%'):
+        searchTitle = "Anime starting with "
+        searchAnime = AnimeSeries.query.filter(AnimeSeries.animeTitle.like(searchVariable))
+    else:
+        searchTitle = "Anime containing "
+        searchAnime = AnimeSeries.query.filter(AnimeSeries.animeTitle.like("%" + searchVariable + "%"))
+        
+    return render_template('search_results.html', image_file=image_file, suggestedAnime=suggestedAnime, searchVariable=searchVariable, posts=posts, searchAnime=searchAnime, letter=letter, searchTitle=searchTitle, check=check, animes=animes, animes2=animes2)
 
+@app.route("/search", methods=['GET', 'POST'])
+def search():
+
+    form = SearchAnimeForm()
+    posts = recentPost()
+    image_file = url_for('static', filename='anime_thumbnail/downloads/')
+    suggestedAnime = SuggestedContent(current_user)
+    if form.validate_on_submit():
+        searchVariable = form.searchVar.data
+        return redirect(url_for('search_results', searchVariable=searchVariable))
     
-    testList = []
-    favList = []
-    mergeList = []
-    numberCount = []
-    genreList = []
-    topGenreCount = []
-    suggestedAnimeList = []
-    suggestedAnimeCount = []
-    defaultDictSorted = []
-    temp = []
-    usedAnimeList = []
-    suggestedAnimeSet = set()
-    defaultDict = {}
-    genreDict = {}
-    suggestedAnimeDict = {}
-    count = 1
-    count1 = 0
-    count2 = 0
-    count3 = 0
-    count4 = 0
-    count5 = 0
-    count6 = 0
-    
-    try:
-        fav = current_user.favorites
-        for item in fav:
-            item = str(item)
-            item = item.replace("[", "")
-            item = item.replace("]", "")
-            item = item.replace("'", "")
-            item = item.replace(" ", "")
-            item2 = item.split("-")
-            item = item2[1]
-            favItem = item2[0]
-            item = item.split(",")
-            testList.append(item)
-            favList.append(favItem)
-        
-    
-        for item in testList:
-            temp += item
-        for item in temp:
-            mergeList.append(int(item))
-        mergeSet = set(mergeList)
-        mergeList2 = list(mergeSet)
-        mergeList2.sort()
-        for item in mergeList2:
-            number = mergeList.count(item)
-            numberCount.append(number)
-            genreList.append(mergeList2[count1])
-            count += 1
-            count1 += 1
-    
-        for item in mergeList2:
-            value = numberCount[count2]
-            key = genreList[count2]
-            genreDict[key] = value
-            count2 += 1
-        
-        genreDictSorted = sorted(genreDict, key=genreDict.get, reverse=True)
-        
-        for item in genreDictSorted:
-            topGenreCount.append(genreDictSorted[count3])
-            count3 += 1
-        
-        test3 = AnimeGenre.query.filter(AnimeGenre.genre_id.in_(topGenreCount)).all()
-        
-        for item in test3:
-            item = str(item)
-            item = item.replace("<", "")
-            item = item.replace(">", "")
-            item = item.replace("AnimeGenre", "")
-            item = item.replace(" ", "")
-            item = item.split(",")
-            item = item[0]
-            suggestedAnimeList.append(item)
-            
-        for i in range(1,len(suggestedAnimeList) + 1):
-            suggestedAnimeSet.add(suggestedAnimeList[count4])
-            count4 += 1
-        usedAnimeList = list(suggestedAnimeSet)
-        usedAnimeList.sort()
-        
-        for item in usedAnimeList:
-            number2 = suggestedAnimeList.count(item)
-            suggestedAnimeCount.append(number2)
-        
-        for i in range(1,len(usedAnimeList) + 1):
-            value = suggestedAnimeCount[count5]
-            key = usedAnimeList[count5]
-            suggestedAnimeDict[key] = value
-            count5 += 1
-        suggestedAnimeDictSorted = sorted(suggestedAnimeDict, key=suggestedAnimeDict.get, reverse=True)
-        for item in suggestedAnimeDictSorted:
-            tempSuggestedAnime = suggestedAnimeDictSorted[count6]
-            if tempSuggestedAnime in (favList):
-                count6 += 1
-            else:
-                break
-        suggestedAnime = AnimeSeries.query.filter(AnimeSeries.id == tempSuggestedAnime).first()
-        
-    except:
-        defaultAnime = AnimeSeries.query.all()
-        for d in defaultAnime:
-            tempAnimeID = d.id
-            tempScored = d.scored
-            defaultDict[tempAnimeID] = tempScored
-        defaultDictSorted = sorted(defaultDict, key=defaultDict.get, reverse=True)
-        suggestedAnime = AnimeSeries.query.filter(AnimeSeries.id == defaultDictSorted[0]).first()
-    
-    return render_template('test.html', testList=testList, mergeList=mergeList, numberCount=numberCount, genreList=genreList, count=count, genreDict=genreDict, genreDictSorted=genreDictSorted, test3=test3, suggestedAnimeList=suggestedAnimeList, usedAnimeList=usedAnimeList, suggestedAnimeCount=suggestedAnimeCount, suggestedAnimeDict=suggestedAnimeDict, mergeSet=mergeSet, suggestedAnimeDictSorted=suggestedAnimeDictSorted, suggestedAnime=suggestedAnime, mergeList2=mergeList2, fav=fav, favList=favList, defaultDict=defaultDict, defaultDictSorted=defaultDictSorted, image_file=image_file, posts=posts)
+    return render_template('search.html', image_file=image_file, suggestedAnime=suggestedAnime, posts=posts, form=form)
+

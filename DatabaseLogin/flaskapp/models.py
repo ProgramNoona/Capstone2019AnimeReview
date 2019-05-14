@@ -8,6 +8,12 @@ from datetime import datetime
 from flaskapp import db, login_manager
 from flask_login import UserMixin
 
+"""
+All Model classes represent tables within the database. Primary keys are represented
+by primary_key=True. Foreign keys are represented by db.ForeignKey. Several bridging
+tables exist to break up many to many relationships, E.g. AnimeSeries - AnimeGenre - Genre
+"""
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -15,6 +21,12 @@ def load_user(user_id):
 favorites = db.Table('favorites',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('animeseries_id', db.Integer, db.ForeignKey('animeseries.id')))
+
+class UserPassList(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    animeseries_id = db.Column(db.Integer, db.ForeignKey('animeseries.id'), primary_key=True)
+    def __repr__(self):
+        return f"{self.animeseries_id}"
 
 class UserRating(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
@@ -40,7 +52,7 @@ class Post(db.Model):
     title = db.Column(db.String(100), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
     animeseries_id = db.Column(db.Integer, db.ForeignKey('animeseries.id'))
     
     def __repr__(self):

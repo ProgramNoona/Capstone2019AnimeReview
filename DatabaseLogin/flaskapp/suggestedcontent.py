@@ -2,10 +2,29 @@
 """
 CSC-289 - Capstone Project - Anime Review Site
 @authors: Michael Blythe, Samuel Blythe, Alex Lopez, Bethany Reagan, Juan Santiago
-__init__.py
+suggestedcontent.py
 """
 
-def SuggestedContent():
+import random
+from flaskapp.models import AnimeSeries, AnimeGenre, UserPassList
+
+"""
+This function takes the favorites of the current user, examines the genre tags 
+of each anime in the favorites list, and tallies the genres. After the iteration 
+process, the tallied genre tags are sorted from the highest count to the lowest. 
+The highest tallied genre is then added to a list where a query is performed to 
+search for any anime containing one or all of the genres on the list. The anime 
+returned are then sorted once more from the highest number of related genre tags 
+to lowest. The highest matching anime (first on the list, index 0) will then be 
+chosen as the suggested anime UNLESS that anime is found within the users favorites 
+list (anime that received a rating of 8 or higher are automatically added to the 
+users favorite list) or found within the user's pass list (anime that got a 7 or 
+lower rating by the user). If this is the case, 1 is added to the index to move 
+it down the line to “the next best” relevant anime and is then checked against the 
+favorite list and pass list again. If the user is not logged in or has not left a 
+review, a random anime is chosen from a selection of 10 of the top rated anime.
+"""
+def SuggestedContent(current_user):
     testList = []
     favList = []
     mergeList = []
@@ -17,6 +36,7 @@ def SuggestedContent():
     defaultDictSorted = []
     temp = []
     usedAnimeList = []
+    passList = []
     suggestedAnimeSet = set()
     defaultDict = {}
     genreDict = {}
@@ -31,6 +51,14 @@ def SuggestedContent():
     
     try:
         fav = current_user.favorites
+        try:
+            passObject = UserPassList.query.filter_by(user_id=current_user.id).all()
+            for k in passObject:
+                k = k.animeseries_id
+                passList.append(k)
+        except:
+            pass
+        
         for item in fav:
             item = str(item)
             item = item.replace("[", "")
@@ -39,7 +67,7 @@ def SuggestedContent():
             item = item.replace(" ", "")
             item2 = item.split("-")
             item = item2[1]
-            favItem = item2[0]
+            favItem = int(item2[0])
             item = item.split(",")
             testList.append(item)
             favList.append(favItem)
@@ -100,8 +128,8 @@ def SuggestedContent():
             count5 += 1
         suggestedAnimeDictSorted = sorted(suggestedAnimeDict, key=suggestedAnimeDict.get, reverse=True)
         for item in suggestedAnimeDictSorted:
-            tempSuggestedAnime = suggestedAnimeDictSorted[count6]
-            if tempSuggestedAnime in (favList):
+            tempSuggestedAnime = int(suggestedAnimeDictSorted[count6])
+            if tempSuggestedAnime in favList or tempSuggestedAnime in passList:
                 count6 += 1
             else:
                 break
@@ -114,6 +142,8 @@ def SuggestedContent():
             tempScored = d.scored
             defaultDict[tempAnimeID] = tempScored
         defaultDictSorted = sorted(defaultDict, key=defaultDict.get, reverse=True)
-        suggestedAnime = AnimeSeries.query.filter(AnimeSeries.id == defaultDictSorted[0]).first()
-
+        randomIndex = [1,2,3,4,5,6,7,8,9,10]
+        randomIndexChoice = random.choice(randomIndex)
+        suggestedAnime = AnimeSeries.query.filter(AnimeSeries.id == defaultDictSorted[randomIndexChoice]).first()
+    
     return suggestedAnime

@@ -11,6 +11,11 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, Valid
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from flaskapp.models import User
 
+"""
+This module creates all of the Forms displayed throughout the site used by the
+user to input information into the database.
+"""
+
 class RegistrationForm(FlaskForm):
     username = StringField('Username', 
                            validators=[DataRequired(), Length(min=2, max=20)])
@@ -97,15 +102,23 @@ class AnimeForm(FlaskForm):
     premiered = StringField('Premiered', validators=[DataRequired(), Length(min=2, max=30)])
     episodes = StringField('Episodes', validators=[DataRequired()])
     scored = StringField('Scored', validators=[DataRequired()])
-    thumbnail = FileField('Thumbnail', validators=[FileAllowed(['jpg'])])
-    pic1 = FileField('Thumbnail', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
-    pic2 = FileField('Thumbnail', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
+    scoredBy = StringField('ScoredBy', validators=[DataRequired()])
+    genre = StringField('genre', validators=[DataRequired()])
+    media = StringField('media', validators=[DataRequired()])
+    studio = StringField('studio', validators=[DataRequired()])
+    producer = StringField('producer', validators=[DataRequired()])
+    picture = FileField('thumbnail', validators=[DataRequired(), FileAllowed(['jpg', 'png', 'jpeg'])])
     submit = SubmitField('Submit')
     
-class SearchForm(FlaskForm):
+class SearchUserForm(FlaskForm):
     searchVar = StringField('User Search', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 class DeletePostForm(FlaskForm):
     searchVar = StringField('Post ID', validators=[DataRequired()])
     submit = SubmitField('Submit')
+    
+class SearchAnimeForm(FlaskForm):
+    searchVar = StringField('Search', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+    

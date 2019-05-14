@@ -4,6 +4,7 @@ CSC-289 - Capstone Project - Anime Review Site
 @authors: Michael Blythe, Samuel Blythe, Alex Lopez, Bethany Reagan, Juan Santiago
 __init__.py
 """
+#This module initializes Flask and the database (db)
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
