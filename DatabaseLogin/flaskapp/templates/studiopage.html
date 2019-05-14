@@ -1,23 +1,20 @@
 <!--
 CSC-289 - Capstone Project - Anime Review Site
 @authors: Michael Blythe, Samuel Blythe, Alex Lopez, Bethany Reagan, Juan Santiago
-about.html
+StudioPage.html
 -->
 {% extends "layout.html" %}
 {% block content %}
 	<div class="left">
-		<h2>Studio: {{ studio }}</h2>
+		<center><h2><font color="#FFFFFF">Studio: {{ studio }}</font></h2></center>
+		<hr></hr>
 		{% for item in animeList %}
-			{% for i in item %}
-				<article class="media content-section">
-				  <div class="media-body">
-					<div class="article-metadata">
-					  <a class="mr-2" href="{{ url_for('animepage', animeTitle=i.animeTitle) }}">{{ i.animeTitle }}</a>
-					  <img class="rounded-circle account-img" src="{{ image_file + i.thumbnail}}">
-					</div>
-					<p class="article-content">{{ i.briefContent }}</p>
-				  </div>
-				</article>
+			{% for A in item %}
+				<center><h4><p><a class="mr-2" href="{{ url_for('animepage', animeTitle=A.animeTitle) }}">{{A.animeTitle}}</a><p></h4></center>
+				<a class="mr-2" href="{{ url_for('animepage', animeTitle=A.animeTitle) }}"><img class="rounded-circle account-img" src="{{ image_file + A.thumbnail}} "align="left"></a>
+				<h5><p><font color="#FFFFFF">{{ A.briefContent }}</font><p></h5>
+				<br></br>
+				<hr></hr>
 			{% endfor %}
 		{% endfor %}
 	</div>

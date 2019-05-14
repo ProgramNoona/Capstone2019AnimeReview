@@ -1,38 +1,95 @@
 <!--
 CSC-289 - Capstone Project - Anime Review Site
 @authors: Michael Blythe, Samuel Blythe, Alex Lopez, Bethany Reagan, Juan Santiago
-about.html
+AnimePage.html
 -->
 {% extends "layout.html" %}
 {% block content %}
+	<br/>
 	<div class="media">
-		<img class="rounded-circle right" src="{{ image_file + animes.thumbnail}}">
+		<img class="rounded-circle mx-auto d-block" src="{{image_file + animes.thumbnail}}">
 	</div>
+	<br/>
+	
+	
+	
+	<!-- Unfinished Gallery
+	
+	<div class="tz-gallery">
+
+		<div class="row">
+	
+			<div class="col-lg-4 col-lg-4">
+                <a class="lightbox" href="{{image_file + animes.thumbnail}}1.jpg">
+                    <img src="{{image_file + animes.thumbnail}}1.jpg" alt="Image1" img style="width:100%">
+                </a>
+            </div>
+
+			<div class="col-lg-4 col-lg-4">
+                <a class="lightbox" href="{{image_file + animes.thumbnail}}2.jpg">
+                    <img src="{{image_file + animes.thumbnail}}2.jpg" alt="Image2" img style="width:100%">
+                </a>
+            </div>
+	
+			<div class="col-lg-4 col-lg-4">
+                <a class="lightbox" href="{{image_file + animes.thumbnail}}3.jpg">
+                    <img src="{{image_file + animes.thumbnail}}3.jpg" alt="Image3" img style="width:100%">
+                </a>
+            </div>			
+
+		</div>
+	</div>
+
+	
+	-->
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<h1>{{ animes.animeTitle }}</h1>
-	<div class="center">
-		<h5>Premiered: {{ animes.premiered }}</h5>
-		<h5>Episodes: {{ animes.episodes }}</h5>
-		<h5>Rating: {{ animes.scored }}</h5>
-	</div>
+	<article class="media content-section">
+		<br/>
+		<div class="center">
+			<h5><font color="#1E90FF">Premiered: </font>{{ animes.premiered }}</h5>
+			<h5><font color="#1E90FF">Episodes: </font>{{ animes.episodes }}</h5>
+			<h5><font color="#1E90FF">Rating: </font>{{ animes.scored }}</h5>
+		</div>
+	</article>
 	<div class="left">
-		<p><h5>{{ animes.content }}</h5></p>
-		<h5>Genre:</h5>
-		{% for item in genreList %}
-			<a class="mr-2" href="{{ url_for('genrepage', genre=item) }}">{{ item }}</a>
-		{% endfor %}
-		<h5>Media Type:</h5>
-		{% for item in mediaList %}
-			<a class="mr-2" href="{{ url_for('mediapage', media=item) }}">{{ item }}</a>
-		{% endfor %}
-		<h5>Studio:</h5>
-		{% for item in studioList %}
-			<a class="mr-2" href="{{ url_for('studiopage', studio=item) }}">{{ item }}</a>
-		{% endfor %}
-		<h5>Producer:</h5>
-		{% for item in producerList %}
-			<a class="mr-2" href="{{ url_for('producerpage', producer=item) }}">{{ item }}</a>
-		{% endfor %}
-	<p></p>
+		<article class="media content-section">
+			<p><h5><font color="#000000">{{ animes.content }}</font></h5></p>
+		</article>
+		<article class="media content-section">
+			<ul>
+			<li><h5>Genre:</h5>
+				{% for item in genreList %}
+					<a class="mr-2" href="{{ url_for('genrepage', genre=item) }}">{{ item }}</a>
+				{% endfor %}
+			</li>
+			<li><h5>Media Type:</h5>
+			{% for item in mediaList %}
+				<a class="mr-2" href="{{ url_for('mediapage', media=item) }}">{{ item }}</a>
+			{% endfor %}
+			</li>
+			<li><h5>Studio:</h5>
+			{% for item in studioList %}
+				<a class="mr-2" href="{{ url_for('studiopage', studio=item) }}">{{ item }}</a>
+			{% endfor %}
+			</li>
+			<li><h5>Producer:</h5>
+			{% for item in producerList %}
+				<a class="mr-2" href="{{ url_for('producerpage', producer=item) }}">{{ item }}</a>
+			{% endfor %}
+			</li>
+			</ul>
+		</article>
+		<br/><br/><br/>
+		
 	<h5><div class="content-section">
 	{% if current_user.is_authenticated %}
 		{% if postValidation != "exists" %}
@@ -41,7 +98,7 @@ about.html
 				{{ form.hidden_tag() }}
 				<fieldset class="form-group">
 					<legend class="border-bottom mb-4">{{ legend }}</legend>
-					<div class="right" style="width:90px; float:left>
+					<div class="center" style="width:90px; float:left>
 						{{ form.rating.label(class="form-control-label") }}
 						{% if form.rating.errors %}
 							{{ form.rating(class="form-control form-control-lg is-invalid") }}
@@ -54,6 +111,7 @@ about.html
 							{{ form.rating(class="form-control form-control-lg") }}
 						{% endif %}
 					</div>
+					</br>
 					<div class="left" style="width:500px; float:left>
 						{{ form.title.label(class="form-control-label") }}
 						{% if form.title.errors %}
@@ -95,6 +153,8 @@ about.html
 		<a class="nav-item nav-link" href="{{ url_for('login') }}">Login to leave a review!</a>
 	{% endif %}
 	</div></h5>
+	<br/>
+	<h1>User Reviews:</h1>
 		{% for post in posts2 %}
 			<article class="media content-section">
 			  <div class="media-body">
@@ -106,13 +166,14 @@ about.html
 						{% set item = r.rating %}
 						{% if ratingList.append(item) %}{% endif %}
 					{% endfor %}
-					<h5 class="right">Rating: {{ ratingList[cnt] }}</h5>
+					<h5 class="left">Rating: {{ ratingList[cnt] }}</h5>
 				</div>
 			  </div>
 			</article>
 		{% endfor %}
 		<div style="clear: both;"></div>
 	</div>
+
 
 
 {% endblock content %}

@@ -15,6 +15,100 @@ layout.html
 	
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 	
+	<link href="http://fonts.googleapis.com/css?family=FONTNAME" rel="stylesheet" type="text/css" />
+	<link href="https://fonts.googleapis.com/css?family=Dokdo" rel="stylesheet"> 
+	
+	<!-- Styles added -->
+	<style>
+		body {
+			font-family: Arial, Helvetica, sans-serif;
+			background: url("/static/background/backgroundproper.png") no-repeat center center fixed;
+			color: #008080;
+			<!--
+			background-color: #DC143C;
+			#c0c0c0
+			-->
+			text-shadow: 1px 1px #808000;
+		}
+		
+		title {
+			color: ##ff4ca5;
+		}
+		
+		<!-- Testing purposes only
+		a { color: #000; }
+		-->
+		
+		h1 {
+			font-family:'Arial';
+			font-size: 75px;
+			font-weight: italic;
+			text-align:center;
+			color: #1E90FF;
+		}
+
+		
+		h2 {
+			text-align:center;
+			color: #c0c0c0;
+		}
+		
+		header {
+		}
+		
+
+		
+		div {
+			color: #008080;
+		}
+		
+		.imgContainer{
+			float:left;
+		}
+		
+
+		
+		div.form-group {
+			color: #008080;
+		}
+		
+		div.media-body {
+			background-color: #ffffff;
+		}
+		
+		article.content-section {
+			background-color: #ffffff;
+		}
+		
+		h6 {
+			color:#1E90FF;
+		}
+		
+		<!-- My own personal reference.
+		img {
+			class: "rounded-circle account-img";
+		}
+		-->
+		
+		.container {
+			background-color: #2f4f4f;
+			<!-- background-color: #F08080 -->
+		}
+		
+		
+		p {
+
+		}
+		
+		
+		nav ul{
+			list-style-type: none;
+			padding: 0;
+		}
+	</style>
+		
+	
+	
 	{% if title %}
 		<title>Anime Reviews - {{ title }}</title>
 	{% else %}
@@ -22,10 +116,12 @@ layout.html
 	{% endif %}
 </head>
 <body>
+
+
 	<header class="site-header">
 	  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
 		<div class="container">
-		  <a class="navbar-brand mr-4" href="/">AniRater - Anime Reviews</a>
+		  <a class="navbar-brand mr-4" href="/">AniRater</a>
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		  </button>
@@ -38,12 +134,15 @@ layout.html
 			<div class="navbar-nav">
 			{% if current_user.is_authenticated and current_user.admin == 'y' %}
 				<a class="nav-item nav-link" href="{{ url_for('admintools') }}">Admin Tools</a>
+				<a class="nav-item nav-link" href="{{ url_for('search') }}">Search</a>
 				<a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
 				<a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
 			{% elif current_user.is_authenticated %}
+				<a class="nav-item nav-link" href="{{ url_for('search') }}">Search</a>
 				<a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
 				<a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
 			{% else %}
+				<a class="nav-item nav-link" href="{{ url_for('search') }}">Search</a>
 				<a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
 				<a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
 			{% endif %}
@@ -71,8 +170,12 @@ layout.html
 			<div align="center">
 				<h4>Recent Reviews</h4>
 				<hr></hr>
-				<h5><p>{{ posts.title }}</p></h5>
-				<h6>{{ posts.content }}</h6>
+				{% if posts != "" %}
+					<h5><p>{{ posts.title }}</p></h5>
+					<h6>{{ posts.content }}</h6>
+				{% else %}
+					<h6>No recent posts</h6>
+				{% endif %}
 			</div>
 		  </div>
 		  <div class="content-section">

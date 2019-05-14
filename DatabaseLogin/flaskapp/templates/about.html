@@ -5,5 +5,47 @@ about.html
 -->
 {% extends "layout.html" %}
 {% block content %}
+<style>
+	.img {
+	  width: 50%;
+	  height: auto;
+	  display: block;
+	  margin-left: auto;
+	  margin-right: auto;
+	}
+	.menu ul {
+	  list-style-type: none;
+	  margin: 0;
+	  padding: 30;
+	}
+	div.container {
+      display:inline-block;
+    }
+	
+</style>
 	<h1>About Page</h1>
+	<div class = "center">
+		<big><p text-align=center><font color="#FFFFFF">AniRater is an anime review site created by five students engaged in their Capstone project.  It is 
+		the result of a lot of hours of hard work, late nights, and desperately wishing we could actually all meet at the 
+		same time to put it all together.  Sickness, car accidents, cat bites, and plain ol' sleeping in has taken its toll on the project.  
+		However, through the power of persistence, it is what you see here.</p></big>
+		<big><p text-align=center>This website was created in the first half of 2019, during the spring semester at 
+		Fayetteville Technical Community College.  Its purpose is to create a sense of community in discussing anime
+		together.  Or just to help us pass the class and graduate with relatively good grades.</font></p></big>
+		<br/>
+		
+		<ul>
+			<img src="static/admin_pics/michael.jpg" float="left; width: 30%; margin-right: 1%; margin-bottom: 0.5em;" alt="Beard Bro #1 -- or #2, can't figure out which.">
+			<p><font color="#1E90FF">Michael and Samuel Blythe</font></p>
+
+			<img src="/static/admin_pics/alex.jpg" alt="Doesn't actually look like an anime character.">
+			<p><font color="#1E90FF">Alex Lopez</font></p>
+
+			<img src="/static/admin_pics/bethany.jpg" alt="My eyes hurt.">
+			<p><font color="#1E90FF">Bethany Reagan</font></p>
+
+			<img src="/static/admin_pics/Juan.jpg" alt="Pikachu Hoodie.">
+			<p><font color="#1E90FF">Juan Santiago</font></p>
+		</ul>
+	</div>
 {% endblock content %}

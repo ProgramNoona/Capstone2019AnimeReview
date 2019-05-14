@@ -1,15 +1,15 @@
 <!--
 CSC-289 - Capstone Project - Anime Review Site
 @authors: Michael Blythe, Samuel Blythe, Alex Lopez, Bethany Reagan, Juan Santiago
-about.html
+anime.html
 -->
 {% extends "layout.html" %}
 {% block content %}
 <div class="content-section">
-	<form method="POST" action="">
+	<form method="POST" action="" enctype="multipart/form-data">
 		{{ form.hidden_tag() }}
 		<fieldset class="form-group">
-			<legend class="border-bottom mb-4">{{ legend }}</legend>
+			<legend class="border-bottom mb-4"><center>Add New Anime Form</center></legend>
 			<div class="form-group">
 				{{ form.animeTitle.label(class="form-control-label") }}
 				{% if form.animeTitle.errors %}
@@ -76,32 +76,88 @@ about.html
 				{% endif %}
 			</div>
 			<div class="form-group">
-					{{ form.thumbnail.label() }}
-					{{ form.thumbnail(class="form-control-file") }}
-					{% if form.thumbnail.errors %}
-						{% for error in form.thumbnail.errors %}
-							<span class="text-danger">{{ error }}</span></br>
+				{{ form.scoredBy.label(class="form-control-label") }}
+				{% if form.scoredBy.errors %}
+					{{ form.scoredBy(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.scoredBy.errors %}
+							<span>{{ error }}</span>
 						{% endfor %}
-					{% endif %}
-				</div>
+					</div>
+				{% else %}
+					{{ form.scoredBy(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
+			<hr></hr>
+			<br></br>
+			<p><h5>-For the next section add ID's seperated by commas-</p>
+			<p>-Example: 1,3,5-</p></h5>
 			<div class="form-group">
-					{{ form.pic1.label() }}
-					{{ form.pic1(class="form-control-file") }}
-					{% if form.pic1.errors %}
-						{% for error in form.pic1.errors %}
-							<span class="text-danger">{{ error }}</span></br>
+				{{ form.genre.label(class="form-control-label") }}
+				{% if form.genre.errors %}
+					{{ form.genre(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.genre.errors %}
+							<span>{{ error }}</span>
 						{% endfor %}
-					{% endif %}
-				</div>
+					</div>
+				{% else %}
+					{{ form.genre(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
 			<div class="form-group">
-					{{ form.pic2.label() }}
-					{{ form.pic2(class="form-control-file") }}
-					{% if form.pic2.errors %}
-						{% for error in form.pic2.errors %}
-							<span class="text-danger">{{ error }}</span></br>
+				{{ form.media.label(class="form-control-label") }}
+				{% if form.media.errors %}
+					{{ form.media(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.media.errors %}
+							<span>{{ error }}</span>
 						{% endfor %}
-					{% endif %}
-				</div>
+					</div>
+				{% else %}
+					{{ form.media(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
+			<div class="form-group">
+				{{ form.studio.label(class="form-control-label") }}
+				{% if form.studio.errors %}
+					{{ form.studio(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.studio.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% else %}
+					{{ form.studio(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
+			<div class="form-group">
+				{{ form.producer.label(class="form-control-label") }}
+				{% if form.producer.errors %}
+					{{ form.producer(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.producer.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% else %}
+					{{ form.producer(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
+			<hr></hr>
+			<br></br>
+			<p><h5>-Use picture sizes 200x200 for thumbnails and .jpg ext only-</p>
+			<p>-Example: picture.jpg-</p></h5>
+			<div class="form-group">
+				{{ form.picture.label() }}
+				{{ form.picture(class="form-control-file") }}
+				{% if form.picture.errors %}
+					{% for error in form.picture.errors %}
+						<span class="text-danger">{{ error }}</span></br>
+					{% endfor %}
+				{% endif %}
+			</div>
+
 		</fieldset>
 		<div class="form-group">
 			{{ form.submit(class="btn btn-outline-info") }}

@@ -1,18 +1,18 @@
 <!--
 CSC-289 - Capstone Project - Anime Review Site
 @authors: Michael Blythe, Samuel Blythe, Alex Lopez, Bethany Reagan, Juan Santiago
-about.html
+User_Posts.html
 -->
 {% extends "layout.html" %}
 {% block content %}
 	<p></p>
-	<h3><center>Delete User Post Page</center></h3>
+	<h3><center><font color="#FFFFFF">Delete User Post Page</font></center></h3>
 	<hr></hr>
 	<br></br>
 	{% if result != none %}
 		{% for post in result %}
-			<h4>Post ID: {{ post.id }}</h4>
-			<h5 class="articale-title">{{ post }}</h5>
+			<h4><font color="#FFFFFF">Post ID: {{ post.id }}</font></h4>
+			<h5 class="articale-title"><font color="#FFFFFF">{{ post }}</font></h5>
 			<hr></hr>
 
 		{% endfor %}

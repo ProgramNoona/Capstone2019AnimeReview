@@ -1,15 +1,15 @@
 <!--
 CSC-289 - Capstone Project - Anime Review Site
 @authors: Michael Blythe, Samuel Blythe, Alex Lopez, Bethany Reagan, Juan Santiago
-about.html
+Results.html
 -->
 {% extends "layout.html" %}
 {% block content %}
 	<p></p>
-	<h3><center>User Moderation Page</center></h3>
+	<h3><center><font color="#FFFFFF">User Moderation Page</font></center></h3>
 	<br></br>
 	{% if result == none %}
-	<h4>No user found!</h4>
+	<h4><font color="#FFFFFF">No user found!</font></h4>
 	<hr></hr>
 	<br></br>
 	<p><a class="mr-2" href="{{ url_for('admintools') }}">Back to Admintools</a></p>
@@ -17,24 +17,24 @@ about.html
 	<h4>User found!</h4>
 	<hr></hr>
 	<p></p>
-	<h4>User ID: {{ result.id }}</h4>
-	<h4>Username: {{ result.username }}</h4>
-	<h4>Email: {{ result.email }}</h4>
+	<h4><font color="#FFFFFF">User ID: {{ result.id }}</font></h4>
+	<h4><font color="#FFFFFF">Username: {{ result.username }}</font></h4>
+	<h4><font color="#FFFFFF">Email: {{ result.email }}</font></h4>
 	<br></br>
 	<hr></hr>
-	<h4>Error: Delete Admin Not Allowed</h4>
+	<h4><font color="#FFFFFF">Error: Delete Admin Not Allowed</font></h4>
 	<br></br>
 	<p><a class="mr-2" href="{{ url_for('admintools') }}">Back to Admintools</a></p>
 	{% else %}
-	<h4>User found</h4>
+	<h4><font color="#FFFFFF">User found</font></h4>
 	<hr></hr>
 	<br></br>
-	<h4>User ID: {{ result.id }}</h4>
-	<h4>Username: {{ result.username }}</h4>
-	<h4>Email: {{ result.email }}</h4>
+	<h4><font color="#FFFFFF">User ID: {{ result.id }}</font></h4>
+	<h4><font color="#FFFFFF">Username: {{ result.username }}</font></h4>
+	<h4><font color="#FFFFFF">Email: {{ result.email }}</font></h4>
 	<h4><a class="mr-2" href="{{ url_for('user_posts', searchVariable=searchVariable) }}">View User Posts</a></h4>
 	<br></br>
-	<h4>Delete User?</h4>
+	<h4><font color="#FFFFFF">Delete User?</font></h4>
 	<p></p>
 	<div>
 		<button type"button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>

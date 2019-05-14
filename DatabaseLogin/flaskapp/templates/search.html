@@ -1,0 +1,277 @@
+<!--
+CSC-289 - Capstone Project - Anime Review Site
+@authors: Michael Blythe, Samuel Blythe, Alex Lopez, Bethany Reagan, Juan Santiago
+Search.html
+-->
+{% extends "layout.html" %}
+{% block content %}
+	<p></p>
+	<h3><center><font color="#FFFFFF">Search Page</font></center></h3>
+	<hr></hr>
+	<br></br>
+	<h4><center><font color="#FFFFFF">By Anime</font></center></h4>
+	<p><center>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="A%") }}">A</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="B%") }}">B</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="C%") }}">C</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="D%") }}">D</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="E%") }}">E</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="F%") }}">F</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="G%") }}">G</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="H%") }}">H</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="I%") }}">I</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="J%") }}">J</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="K%") }}">K</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="L%") }}">L</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="M%") }}">M</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="N%") }}">N</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="O%") }}">O</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="P%") }}">P</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="Q%") }}">Q</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="R%") }}">R</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="S%") }}">S</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="T%") }}">T</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="U%") }}">U</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="V%") }}">V</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="W%") }}">W</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="X%") }}">X</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="Y%") }}">Y</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="Z%") }}">Z</a>
+	</center></P>
+	<p></p>
+	<center>
+	<div class="containertext-center">
+		<form class="search-form" method="POST" action="">
+			{{ form.hidden_tag() }}
+			<fieldset class="form-group">
+				<div class="search-form" style="width:600px; align="center">
+					{{ form.searchVar.label(class="form-control-label") }}
+					{% if form.searchVar.errors %}
+						{{ form.searchVar(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.searchVar.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ form.searchVar(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+			</fieldset>
+			<div class="form-group">
+				{{ form.submit(class="btn btn-outline-info") }}
+			</div>
+		</form>
+	</div>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="TopRated") }}">Top Rated</a>
+	<a class="mr-2" href="{{ url_for('search_results', searchVariable="NewAdded") }}">Newest Added</a>
+	</center>
+	<hr></hr>
+	<br></br>
+	<h4><center><font color="#FFFFFF">By Genre</font></center></h4>
+	<p><center>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Action") }}">Action</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Adventure") }}">Adventure</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Cars") }}">Cars</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Comedy") }}">Comedy</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Dementia") }}">Dementia</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Demons") }}">Demons</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Drama") }}">Drama</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Fantasy") }}">Fantasy</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Game") }}">Game</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Historical") }}">Historical</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Horror") }}">Horror</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Kids") }}">Kids</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Magic") }}">Magic</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="MartialArts") }}">Martial Arts</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Mecha") }}">Mecha</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Military") }}">Military</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Mystery") }}">Mystery</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Parody") }}">Parody</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Police") }}">Police</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Psychological") }}">Psychological</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Romance") }}">Romance</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Samurai") }}">Samurai</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="School") }}">School</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Sci-Fi") }}">Sci-Fi</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Seinen") }}">Seinen</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Shoujo") }}">Shoujo</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Shounen") }}">Shounen</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="SliceofLife") }}">Slice of Life</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Sports") }}">Sports</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="SuperPower") }}">Super Power</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Supernatural") }}">Supernatural</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Thriller") }}">Thriller</a>
+		<a class="mr-2" href="{{ url_for('genrepage', genre="Vampire") }}">Vampire</a>
+	</center></p>
+	<hr></hr>
+	<br></br>
+	<h4><center><font color="#FFFFFF">By Media</font></center></h4>
+	<p><center>
+		<a class="mr-2" href="{{ url_for('mediapage', media="Movie") }}">Movie</a>
+		<a class="mr-2" href="{{ url_for('mediapage', media="OVA") }}">OVA</a>
+		<a class="mr-2" href="{{ url_for('mediapage', media="TV") }}">TV</a>
+	</center></P>
+	<hr></hr>
+	<br></br>
+	<h4><center><font color="#FFFFFF">By Studio</font></center></h4>
+	<p><center>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="A-1Pictures") }}">A-1 Pictures</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="APPP") }}">APPP</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Artland") }}">Artland</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="BeeTrain") }}">Bee Train</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Bones") }}">Bones</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="BrainsBase") }}">Brain's Base</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="CLOVERWORKS") }}">CLOVERWORKS</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="DavidProduction") }}">David Production</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Gainax") }}">Gainax</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Gonzo") }}">Gonzo</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="GroupTAC") }}">Group TAC</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="J.C.Staff") }}">J.C.Staff</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="JapanVistec") }}">Japan Vistec</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="KyotoAnimation") }}">Kyoto Animation</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Madhouse") }}">Madhouse</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Manglobe") }}">Manglobe</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="NUT") }}">NUT</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="NipponAnimation") }}">Nippon Animation</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Nomad") }}">Nomad</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="OLM") }}">OLM</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Orange") }}">Orange</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Pastel") }}">Pastel</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="ProductionI.G") }}">Production I.G</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="REVOROOT") }}">REVOROOT</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Satelight") }}">Satelight</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Shaft") }}">Shaft</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Shin-EiAnimation") }}">Shin-Ei Animation</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Studio3Hz") }}">Studio 3Hz</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="StudioComet") }}">Studio Comet</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="StudioDeen") }}">Studio Deen</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="StudioGallop") }}">Studio Gallop</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="StudioPierrot") }}">Studio Pierrot</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Sunrise") }}">Sunrise</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="SynergySP") }}">SynergySP</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="TMSEntertainment") }}">TMS Entertainment</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="TatsunokoProduction") }}">Tatsunoko Production</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="ToeiAnimation") }}">Toei Animation</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Trigger") }}">Trigger</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="WhiteFox") }}">White Fox</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="WitStudio") }}">Wit Studio</a>
+		<a class="mr-2" href="{{ url_for('studiopage', studio="Xebec") }}">Xebec</a>
+	</center></p>
+	<hr></hr>
+	<br></br>
+	<h4><center><font color="#FFFFFF">By Producer</font></center></h4>
+	<p><center>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="ABCAnimation") }}">ABC Animation</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="ASCIIMediaWorks") }}">ASCII Media Works</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="AT-X") }}">AT-X</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Animax") }}">Animax</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Aniplex") }}">Aniplex</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="AsahiBroadcasting") }}">Asahi Broadcasting</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="AsatsuDK") }}">Asatsu DK</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="AshiProduction") }}">Ashi Production</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="AtelierMusa") }}">Atelier Musa</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="AudioTanaka") }}">Audio Tanaka</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="AvexEntertainment") }}">Avex Entertainment</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="AvexPictures") }}">Avex Pictures</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="BS11") }}">BS11</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Bandai") }}">Bandai</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="BandaiChannel") }}">Bandai Channel</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="BandaiNamcoEntertainment") }}">Bandai Namco Entertainment</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="BandaiNamcoGames") }}">Bandai NamcoGames</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="BandaiVisual") }}">Bandai Visual</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Banpresto") }}">Banpresto</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="BarnumStudio") }}">Barnum Studio</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Capcom") }}">Capcom</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="CyberConnect2") }}">Cyber Connect2</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="DAXProduction") }}">DAX Production</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="DelfiSound") }}">Delfi Sound</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Dentsu") }}">Dentsu</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="EastJapanMarketingandCommunications") }}">East Japan Marketing & Communications</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="flyingDOG") }}">flying DOG</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Forecast Communications") }}">Forecast Communications</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="FourSome") }}">Four Some</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="FrontierWorks") }}">Frontier Works</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="FujiPacificMusicPublishing") }}">Fuji Pacific Music Publishing</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="FujiTV") }}">Fuji TV</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="GANSIS") }}">GANSIS</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="GDH") }}">GDH</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Genco") }}">Genco</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="GeneonUniversalEntertainment") }}">Geneon Universal Entertainment</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="GoodSmileCompany") }}">Good Smile Company</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="HakuhodoDYMediaPartners") }}">Hakuhodo DY Media Partners</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="HappinetPictures") }}">Happinet Pictures</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="IWill") }}">I Will</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Imagica") }}">Imagica</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="KSS") }}">KSS</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="KadokawaPicturesJapan") }}">Kadokawa Pictures Japan</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="KadokawaShoten") }}">Kadokawa Shoten</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Khara") }}">Khara</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="KingRecords") }}">King Records</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="KittyFilms") }}">Kitty Films</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="KlockWorx") }}">Klock Worx</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Kodansha") }}">Kodansha</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Lantis") }}">Lantis</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Lawson") }}">Lawson</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="LucentPicturesEntertainment") }}">Lucent Pictures Entertainment</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="LuckyParadise") }}">Lucky Paradise</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="MadBox") }}">Mad Box</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="MainichiBroadcastingSystem") }}">Mainichi Broadcasting System</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Marvelous") }}">Marvelous</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="MediaFactory") }}">Media Factory</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="MediaNet") }}">Media Net</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="MedicosEntertainment") }}">Medicos Entertainment</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="MellowHead") }}">Mellow Head</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Memory-Tech") }}">Memory-Tech</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Movic") }}">Movic</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="NHK") }}">NHK</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="NagoyaTVHousou") }}">Nagoya TV Housou</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="NihonAdSystems") }}">Nihon Ad Systems</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="NipponTelevisionNetwork") }}">Nippon Television Network</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Nitroplus") }}">Nitroplus</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="OBPlanning") }}">OB Planning</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="PioneerLDC") }}">Pioneer LDC</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="PonyCanyon") }}">Pony Canyon</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="PonyCanyonEnterprise") }}">Pony Canyon Enterprise</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="ProductionI.G") }}">Production I.G</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Q-Tec") }}">Q-Tec</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Rakuonsha") }}">Rakuonsha</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="SKYPerfectWellThink") }}">SKY Perfect Well Think</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="SakuraCreate") }}">Sakura Create</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="ShingekinoKyojinTeam") }}">Shingeki no Kyojin Team</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Shogakukan") }}">Shogakukan</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="ShogakukanProductions") }}">Shogakukan Productions</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Shueisha") }}">Shueisha</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="SogoVision") }}">Sogo Vision</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="SonyMusicEntertainment") }}">Sony Music Entertainment</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="SonyPCL") }}">Sony PCL</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="Sotsu") }}">Sotsu</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="SotsuMusicPublishing") }}">Sotsu Music Publishing</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="SquareEnix") }}">Square Enix</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="StarchildRecords") }}">Starchild Records</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="StudioJack") }}">Studio Jack</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="StudioKelmadick") }}">Studio Kelmadick</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="StudioMoriken") }}">Studio Moriken</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="TAP") }}">TAP</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="TBS") }}">TBS</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="TMS-Kyokuchi") }}">TMS-Kyokuchi</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="TOHOanimation") }}">TOHOa nimation</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="TVAsahi") }}">TV Asahi</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="TVTokyo") }}">TV Tokyo</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="TVTokyoMusic") }}">TV Tokyo Music</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="TokumaShoten") }}">Tokuma Shoten</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="TokyoMX") }}">Tokyo MX</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="TrilogyFutureStudio") }}">Trilogy Future Studio</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="USEN") }}">USEN</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="UltraSuperPictures") }}">Ultra Super Pictures</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="VAP") }}">VAP</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="VictorEntertainment") }}">Victor Entertainment</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="WOWOW") }}">WOWOW</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="WarnerBros.") }}">Warner Bros.</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="YTV") }}">YTV</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="YomikoAdvertising") }}">Yomiko Advertising</a>
+		<a class="mr-2" href="{{ url_for('producerpage', producer="YomiuriTelecasting") }}">Yomiuri Telecasting</a>
+	</center></P>
+	<hr></hr>
+	<br></br>
+{% endblock content %}
